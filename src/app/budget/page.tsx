@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { Expense, defaultExpenses, exchangeRate, budget } from "@/lib/tripData";
-import { Wallet, ArrowLeftRight, Plane, Hotel, Utensils, Car, Target, ShoppingBag, Package, Plus, X, Receipt } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 const categories = [
-  { id: "flight", label: "항공", icon: Plane },
-  { id: "accommodation", label: "숙소", icon: Hotel },
-  { id: "food", label: "식사", icon: Utensils },
-  { id: "transport", label: "교통", icon: Car },
-  { id: "activity", label: "관광/체험", icon: Target },
-  { id: "shopping", label: "쇼핑", icon: ShoppingBag },
-  { id: "other", label: "기타", icon: Package },
+  { id: "flight", label: "항공" },
+  { id: "accommodation", label: "숙소" },
+  { id: "food", label: "식사" },
+  { id: "transport", label: "교통" },
+  { id: "activity", label: "관광/체험" },
+  { id: "shopping", label: "쇼핑" },
+  { id: "other", label: "기타" },
 ];
 
 export default function BudgetPage() {
@@ -30,7 +30,16 @@ export default function BudgetPage() {
   useEffect(() => {
     const saved = localStorage.getItem("india-expenses");
     if (saved) {
-      setExpenses(JSON.parse(saved));
+      const savedItems: Expense[] = JSON.parse(saved);
+      const missingDefaults = defaultExpenses.filter(
+        (d) => !savedItems.some((s) => s.id === d.id)
+      );
+      if (missingDefaults.length > 0) {
+        const merged = [...missingDefaults, ...savedItems];
+        saveExpenses(merged);
+      } else {
+        setExpenses(savedItems);
+      }
     }
   }, []);
 
@@ -104,12 +113,7 @@ export default function BudgetPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-16">
       <div className="flex items-center justify-between mb-6 sm:mb-10">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-              <Wallet size={18} className="sm:w-[22px] sm:h-[22px] text-neutral-600 dark:text-neutral-400" />
-            </div>
-            예산 관리
-          </h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">예산 관리</h1>
           <p className="text-neutral-500 text-sm sm:text-base hidden sm:block">여행 경비를 관리하고 환율을 계산하세요</p>
         </div>
         <button
@@ -123,9 +127,7 @@ export default function BudgetPage() {
       <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* Currency Converter */}
         <div className="lg:col-span-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6">
-          <h2 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 flex items-center gap-2">
-            <ArrowLeftRight size={16} className="sm:w-[18px] sm:h-[18px] text-neutral-400" /> 환율 계산기
-          </h2>
+          <h2 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2">환율 계산기</h2>
           <p className="text-xs sm:text-sm text-neutral-500 mb-4 sm:mb-6">
             1 KRW = {exchangeRate.KRW_TO_INR} INR | 1 INR = {exchangeRate.INR_TO_KRW} KRW
             <br />
@@ -145,7 +147,7 @@ export default function BudgetPage() {
             </div>
 
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center shrink-0 rotate-90 sm:rotate-0">
-              <ArrowLeftRight size={16} className="sm:w-[18px] sm:h-[18px] text-neutral-400" />
+              <span className="text-neutral-400 text-sm font-medium">&harr;</span>
             </div>
 
             <div className="flex-1 w-full">
@@ -175,9 +177,6 @@ export default function BudgetPage() {
 
         {/* Total Summary */}
         <div className="bg-neutral-900 dark:bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white dark:text-neutral-900 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-white/5 dark:bg-black/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-16 sm:w-24 h-16 sm:h-24 bg-white/5 dark:bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-
           <div className="relative">
             <h2 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4 opacity-60 uppercase tracking-wide">총 지출</h2>
             <p className="text-3xl sm:text-4xl font-bold tracking-tight number-display">₩{totalKrw.toLocaleString()}</p>
@@ -188,17 +187,14 @@ export default function BudgetPage() {
               <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {expensesByCategory
                   .filter((c) => c.total > 0)
-                  .map((cat) => {
-                    const Icon = cat.icon;
-                    return (
-                      <span
-                        key={cat.id}
-                        className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 bg-white/10 dark:bg-black/10 rounded-full"
-                      >
-                        <Icon size={10} className="sm:w-3 sm:h-3" /> ₩{cat.total.toLocaleString()}
-                      </span>
-                    );
-                  })}
+                  .map((cat) => (
+                    <span
+                      key={cat.id}
+                      className="text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 bg-white/10 dark:bg-black/10 rounded-full"
+                    >
+                      {cat.label} ₩{cat.total.toLocaleString()}
+                    </span>
+                  ))}
               </div>
             </div>
           </div>
@@ -208,50 +204,35 @@ export default function BudgetPage() {
       {/* Budget Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6">
-          <div className="flex items-center gap-3 mb-3 sm:mb-4">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-              <Plane size={18} className="sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div>
-              <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide">항공권 (별도)</p>
-              <p className="text-lg sm:text-xl font-bold number-display">₩{budget.flight.toLocaleString()}</p>
-            </div>
+          <div className="mb-3 sm:mb-4">
+            <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide">항공권 (별도)</p>
+            <p className="text-lg sm:text-xl font-bold number-display">₩{budget.flight.toLocaleString()}</p>
           </div>
           <p className="text-xs sm:text-sm text-neutral-400">결제 완료</p>
         </div>
 
         <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6">
-          <div className="flex items-center gap-3 mb-3 sm:mb-4">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-              <Wallet size={18} className="sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
-            </div>
-            <div>
-              <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide">여행 경비 예산</p>
-              <p className="text-lg sm:text-xl font-bold number-display">₩{budget.travel.toLocaleString()}</p>
-            </div>
+          <div className="mb-3 sm:mb-4">
+            <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide">여행 경비 예산</p>
+            <p className="text-lg sm:text-xl font-bold number-display">₩{budget.travel.toLocaleString()}</p>
           </div>
           <div className="w-full bg-neutral-100 dark:bg-neutral-800 rounded-full h-1.5 sm:h-2">
             <div
-              className="bg-green-500 h-1.5 sm:h-2 rounded-full transition-all"
+              className="bg-neutral-900 dark:bg-white h-1.5 sm:h-2 rounded-full transition-all"
               style={{ width: `${Math.min((totalKrw / budget.travel) * 100, 100)}%` }}
             />
           </div>
           <p className="text-xs sm:text-sm text-neutral-400 mt-1.5 sm:mt-2">{((totalKrw / budget.travel) * 100).toFixed(1)}% 사용</p>
         </div>
 
-        <div className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 ${budget.travel - totalKrw >= 0 ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'}`}>
-          <div className="flex items-center gap-3 mb-3 sm:mb-4">
-            <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center ${budget.travel - totalKrw >= 0 ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
-              <Target size={18} className={`sm:w-5 sm:h-5 ${budget.travel - totalKrw >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`} />
-            </div>
-            <div>
-              <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide">
-                {budget.travel - totalKrw >= 0 ? '남은 예산' : '초과 금액'}
-              </p>
-              <p className={`text-lg sm:text-xl font-bold number-display ${budget.travel - totalKrw >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-                ₩{Math.abs(budget.travel - totalKrw).toLocaleString()}
-              </p>
-            </div>
+        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+          <div className="mb-3 sm:mb-4">
+            <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide">
+              {budget.travel - totalKrw >= 0 ? '남은 예산' : '초과 금액'}
+            </p>
+            <p className="text-lg sm:text-xl font-bold number-display">
+              ₩{Math.abs(budget.travel - totalKrw).toLocaleString()}
+            </p>
           </div>
           <p className="text-xs sm:text-sm text-neutral-500">
             ≈ ₹{(Math.abs(budget.travel - totalKrw) * exchangeRate.KRW_TO_INR).toLocaleString()}
@@ -264,13 +245,9 @@ export default function BudgetPage() {
         <h2 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6">카테고리별 지출</h2>
         <div className="grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4">
           {expensesByCategory.map((cat) => {
-            const Icon = cat.icon;
             const percentage = totalKrw > 0 ? (cat.total / totalKrw) * 100 : 0;
             return (
-              <div key={cat.id} className="text-center group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3 transition-all bg-neutral-100 dark:bg-neutral-800 group-hover:bg-neutral-900 dark:group-hover:bg-white active:scale-95">
-                  <Icon size={16} className="sm:w-5 sm:h-5 text-neutral-600 dark:text-neutral-400 group-hover:text-white dark:group-hover:text-neutral-900 transition-colors" />
-                </div>
+              <div key={cat.id} className="text-center">
                 <p className="text-[10px] sm:text-sm text-neutral-500 mb-0.5 sm:mb-1 truncate">{cat.label}</p>
                 <p className="font-semibold text-xs sm:text-base number-display">₩{cat.total >= 10000 ? `${(cat.total/10000).toFixed(0)}만` : cat.total.toLocaleString()}</p>
                 {percentage > 0 && (
@@ -284,30 +261,21 @@ export default function BudgetPage() {
 
       {/* Expense List */}
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6">
-        <h2 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 flex items-center gap-2">
-          <Receipt size={16} className="sm:w-[18px] sm:h-[18px] text-neutral-400" /> 지출 내역
-        </h2>
+        <h2 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6">지출 내역</h2>
 
         {expenses.length === 0 ? (
           <div className="text-center py-12 sm:py-16">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-              <Receipt size={20} className="sm:w-6 sm:h-6 text-neutral-400" />
-            </div>
             <p className="text-neutral-500 text-sm sm:text-base">아직 등록된 지출이 없습니다</p>
           </div>
         ) : (
           <div className="space-y-2">
             {[...expenses].reverse().map((expense) => {
               const cat = categories.find((c) => c.id === expense.category);
-              const Icon = cat?.icon || Package;
               return (
                 <div
                   key={expense.id}
-                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-neutral-100 dark:border-neutral-800 rounded-lg sm:rounded-xl group hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-all"
+                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-neutral-100 dark:border-neutral-800 rounded-lg sm:rounded-xl group hover:border-neutral-300 dark:hover:border-neutral-700 transition-all"
                 >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 bg-neutral-100 dark:bg-neutral-800">
-                    <Icon size={16} className="sm:w-[18px] sm:h-[18px] text-neutral-600 dark:text-neutral-400" />
-                  </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-sm sm:text-base truncate">{expense.description}</h4>
                     <p className="text-xs sm:text-sm text-neutral-500">

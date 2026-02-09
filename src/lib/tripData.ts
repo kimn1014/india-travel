@@ -132,6 +132,19 @@ export interface DaySchedule {
   }[];
   snapPoint?: string;
   accommodation?: string;
+  accommodationDetails?: {
+    name: string;
+    nameEn: string;
+    address: string;
+    tel: string;
+    reservationNo: string;
+    roomType: string;
+    checkIn: string;
+    meal: string;
+    guests: number;
+    nights: number;
+    period: string;
+  };
   note?: string;
 }
 
@@ -153,8 +166,21 @@ export const itinerary: DaySchedule[] = [
       { time: "17:30", title: "인디라 간디 국제공항(DEL) 도착", description: "입국 수속" },
       { title: "휴식", description: "다음 날 이른 새벽 라다크행 비행기를 위해 무리하지 않고 휴식" },
     ],
-    accommodation: "델리 에어로시티(Aerocity) 공항 근처",
-    note: "공항과 가깝고 깔끔함",
+    accommodation: "Pride Plaza Hotel Aerocity, New Delhi",
+    accommodationDetails: {
+      name: "프라이드 플라자 호텔 에어로시티",
+      nameEn: "Pride Plaza Hotel Aerocity",
+      address: "Hospitality District, Delhi Aerocity, IGI Airport, New Delhi - 110037",
+      tel: "+91-20-66471471",
+      reservationNo: "HH2632177268",
+      roomType: "Superior Twin Room",
+      checkIn: "18:00 (Late Check-in)",
+      meal: "조식 불포함",
+      guests: 2,
+      nights: 1,
+      period: "2026-02-13 ~ 2026-02-14",
+    },
+    note: "공항 바로 옆 | 체크인 18:00 | 조식 불포함",
   },
   {
     day: 2,
@@ -333,7 +359,16 @@ export interface Expense {
   category: "flight" | "accommodation" | "food" | "transport" | "activity" | "shopping" | "other";
 }
 
-export const defaultExpenses: Expense[] = [];
+export const defaultExpenses: Expense[] = [
+  {
+    id: "hotel-delhi-day1",
+    date: "2026-02-13",
+    description: "델리 숙소 - Pride Plaza Hotel Aerocity (1박)",
+    amount: 238556,
+    currency: "KRW",
+    category: "accommodation",
+  },
+];
 
 export const exchangeRate = {
   KRW_TO_INR: 0.061,

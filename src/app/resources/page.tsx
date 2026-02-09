@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FolderOpen, Link2, FileText, Image, Plus, X, ExternalLink, Trash2, Plane } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 interface Resource {
   id: string;
@@ -21,12 +21,20 @@ const defaultResources: Resource[] = [
     url: "https://www.hanatour.com/com/mpg/CHPC0MPG0303M200",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "hotel-delhi-voucher",
+    type: "pdf",
+    title: "델리 숙소 바우처 - Pride Plaza Hotel Aerocity",
+    description: "2/13~2/14 (1박) Superior Twin Room · 예약번호: HH2632177268",
+    url: "/vouchers/voucher_HH2632177268.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
-const typeConfig = {
-  link: { label: "링크", icon: Link2 },
-  pdf: { label: "PDF", icon: FileText },
-  image: { label: "이미지", icon: Image },
+const typeConfig: Record<string, string> = {
+  link: "링크",
+  pdf: "PDF",
+  image: "이미지",
 };
 
 export default function ResourcesPage() {
@@ -43,7 +51,16 @@ export default function ResourcesPage() {
   useEffect(() => {
     const saved = localStorage.getItem("india-resources");
     if (saved) {
-      setResources(JSON.parse(saved));
+      const savedItems: Resource[] = JSON.parse(saved);
+      const missingDefaults = defaultResources.filter(
+        (d) => !savedItems.some((s) => s.id === d.id)
+      );
+      if (missingDefaults.length > 0) {
+        const merged = [...missingDefaults, ...savedItems];
+        saveResources(merged);
+      } else {
+        setResources(savedItems);
+      }
     }
   }, []);
 
@@ -77,28 +94,18 @@ export default function ResourcesPage() {
     ? resources.filter((r) => r.type === selectedType)
     : resources;
 
-  const getIcon = (resource: Resource) => {
-    if (resource.id === "hanatour-flight") return Plane;
-    return typeConfig[resource.type].icon;
-  };
-
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16">
-      <div className="flex items-center justify-between mb-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-16">
+      <div className="flex items-center justify-between mb-8 sm:mb-10">
         <div>
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-              <FolderOpen size={22} className="text-neutral-600 dark:text-neutral-400" />
-            </div>
-            자료실
-          </h1>
-          <p className="text-neutral-500">여행 관련 링크, 문서, 이미지를 저장하세요</p>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1">자료실</h1>
+          <p className="text-sm text-neutral-500">여행 관련 링크, 문서, 이미지를 저장하세요</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 btn-primary rounded-full font-medium text-sm"
+          className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 btn-primary rounded-full font-medium text-sm"
         >
-          <Plus size={18} /> 자료 추가
+          <Plus size={16} /> <span className="hidden sm:inline">자료 추가</span><span className="sm:hidden">추가</span>
         </button>
       </div>
 
@@ -114,21 +121,19 @@ export default function ResourcesPage() {
         >
           전체 ({resources.length})
         </button>
-        {Object.entries(typeConfig).map(([type, config]) => {
-          const Icon = config.icon;
+        {Object.entries(typeConfig).map(([type, label]) => {
           const count = resources.filter((r) => r.type === type).length;
           return (
             <button
               key={type}
               onClick={() => setSelectedType(selectedType === type ? null : type)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                 selectedType === type
                   ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
                   : "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400"
               }`}
             >
-              <Icon size={14} />
-              {config.label} ({count})
+              {label} ({count})
             </button>
           );
         })}
@@ -137,67 +142,52 @@ export default function ResourcesPage() {
       {/* Resources Grid */}
       {filteredResources.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-20 h-20 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mx-auto mb-6">
-            <FolderOpen size={32} className="text-neutral-400" />
-          </div>
           <p className="text-neutral-500 text-lg">저장된 자료가 없습니다</p>
           <p className="text-neutral-400 text-sm mt-2">자료 추가 버튼을 눌러 새 자료를 추가하세요</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredResources.map((resource) => {
-            const Icon = getIcon(resource);
-            return (
-              <div
-                key={resource.id}
-                className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all group"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-                    <Icon size={20} className="text-neutral-600 dark:text-neutral-400" />
-                  </div>
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button
-                      onClick={() => deleteResource(resource.id)}
-                      className="w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center transition-colors"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <span className="text-xs font-medium px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-neutral-500">
-                    {typeConfig[resource.type].label}
-                  </span>
-                </div>
-
-                <h3 className="font-semibold mb-2 line-clamp-2">{resource.title}</h3>
-                {resource.description && (
-                  <p className="text-sm text-neutral-500 mb-4 line-clamp-2">{resource.description}</p>
-                )}
-
-                <a
-                  href={resource.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+          {filteredResources.map((resource) => (
+            <div
+              key={resource.id}
+              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <span className="text-xs font-medium px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-neutral-500">
+                  {typeConfig[resource.type]}
+                </span>
+                <button
+                  onClick={() => deleteResource(resource.id)}
+                  className="w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
                 >
-                  <ExternalLink size={14} />
-                  열기
-                </a>
+                  <X size={14} />
+                </button>
               </div>
-            );
-          })}
+
+              <h3 className="font-semibold mb-2 line-clamp-2">{resource.title}</h3>
+              {resource.description && (
+                <p className="text-sm text-neutral-500 mb-4 line-clamp-2">{resource.description}</p>
+              )}
+
+              <a
+                href={resource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+              >
+                열기 &rarr;
+              </a>
+            </div>
+          ))}
         </div>
       )}
 
       {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-          <div className="bg-white dark:bg-neutral-900 rounded-2xl p-6 w-full max-w-md animate-scale-in shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold">새 자료 추가</h3>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 sm:p-4 animate-fade-in modal-mobile">
+          <div className="bg-white dark:bg-neutral-900 rounded-t-2xl sm:rounded-2xl p-5 sm:p-6 w-full sm:max-w-md animate-scale-in shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-5 sm:mb-6">
+              <h3 className="text-lg sm:text-xl font-bold">새 자료 추가</h3>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 hover:text-neutral-600 transition-colors"
@@ -208,32 +198,28 @@ export default function ResourcesPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">
+                <label className="block text-[10px] sm:text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1.5 sm:mb-2">
                   자료 유형
                 </label>
                 <div className="flex gap-2">
-                  {Object.entries(typeConfig).map(([type, config]) => {
-                    const Icon = config.icon;
-                    return (
-                      <button
-                        key={type}
-                        onClick={() => setNewResource({ ...newResource, type: type as Resource["type"] })}
-                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                          newResource.type === type
-                            ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-                            : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400"
-                        }`}
-                      >
-                        <Icon size={14} />
-                        {config.label}
-                      </button>
-                    );
-                  })}
+                  {Object.entries(typeConfig).map(([type, label]) => (
+                    <button
+                      key={type}
+                      onClick={() => setNewResource({ ...newResource, type: type as Resource["type"] })}
+                      className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                        newResource.type === type
+                          ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                          : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">
+                <label className="block text-[10px] sm:text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1.5 sm:mb-2">
                   제목
                 </label>
                 <input
@@ -241,12 +227,12 @@ export default function ResourcesPage() {
                   value={newResource.title}
                   onChange={(e) => setNewResource({ ...newResource, title: e.target.value })}
                   placeholder="자료 제목"
-                  className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                  className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">
+                <label className="block text-[10px] sm:text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1.5 sm:mb-2">
                   설명 (선택)
                 </label>
                 <input
@@ -254,12 +240,12 @@ export default function ResourcesPage() {
                   value={newResource.description}
                   onChange={(e) => setNewResource({ ...newResource, description: e.target.value })}
                   placeholder="간단한 설명"
-                  className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                  className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">
+                <label className="block text-[10px] sm:text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1.5 sm:mb-2">
                   URL / 링크
                 </label>
                 <input
@@ -267,21 +253,21 @@ export default function ResourcesPage() {
                   value={newResource.url}
                   onChange={(e) => setNewResource({ ...newResource, url: e.target.value })}
                   placeholder="https://..."
-                  className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                  className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
                 />
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 mt-5 sm:mt-6 pb-safe">
               <button
                 onClick={() => setShowAddModal(false)}
-                className="flex-1 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+                className="flex-1 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors active:scale-[0.98]"
               >
                 취소
               </button>
               <button
                 onClick={addResource}
-                className="flex-1 px-4 py-3 btn-primary rounded-xl font-medium"
+                className="flex-1 px-4 py-3 btn-primary rounded-lg sm:rounded-xl font-medium active:scale-[0.98]"
               >
                 추가
               </button>
