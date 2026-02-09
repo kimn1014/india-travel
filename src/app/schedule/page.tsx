@@ -18,10 +18,11 @@ export default function SchedulePage() {
 
   const cityGroups = [
     { city: "델리", days: [1] },
-    { city: "레 (라다크)", days: [2, 3] },
-    { city: "조드푸르", days: [4, 5] },
-    { city: "자이살메르", days: [6, 7] },
+    { city: "자이살메르", days: [2, 3] },
+    { city: "우다이푸르", days: [4, 5] },
+    { city: "자이푸르", days: [6, 7] },
     { city: "바라나시", days: [8, 9] },
+    { city: "델리", days: [10] },
   ];
 
   return (
@@ -254,7 +255,7 @@ export default function SchedulePage() {
         <h3 className="font-bold text-lg mb-6">여행 요약</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="text-center p-4 sm:p-5 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
-            <p className="text-3xl sm:text-4xl font-bold">9</p>
+            <p className="text-3xl sm:text-4xl font-bold">10</p>
             <p className="text-xs text-neutral-500 mt-2 uppercase tracking-wide">일정</p>
           </div>
           <div className="text-center p-4 sm:p-5 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
@@ -262,12 +263,12 @@ export default function SchedulePage() {
             <p className="text-xs text-neutral-500 mt-2 uppercase tracking-wide">도시</p>
           </div>
           <div className="text-center p-4 sm:p-5 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
-            <p className="text-3xl sm:text-4xl font-bold">6</p>
+            <p className="text-3xl sm:text-4xl font-bold">5</p>
             <p className="text-xs text-neutral-500 mt-2 uppercase tracking-wide">항공편</p>
           </div>
           <div className="text-center p-4 sm:p-5 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
-            <p className="text-3xl sm:text-4xl font-bold">1</p>
-            <p className="text-xs text-neutral-500 mt-2 uppercase tracking-wide">차량 이동</p>
+            <p className="text-3xl sm:text-4xl font-bold">2</p>
+            <p className="text-xs text-neutral-500 mt-2 uppercase tracking-wide">야간버스</p>
           </div>
         </div>
 
@@ -275,7 +276,7 @@ export default function SchedulePage() {
         <div className="mt-6 sm:mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-700">
           <p className="text-xs font-medium text-neutral-400 uppercase tracking-wide mb-4">여행 루트</p>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            {["서울", "델리", "레", "조드푸르", "자이살메르", "델리", "바라나시", "델리", "서울"].map((city, idx, arr) => (
+            {["서울", "델리", "자이살메르", "우다이푸르", "자이푸르", "델리", "바라나시", "델리", "서울"].map((city, idx, arr) => (
               <span key={idx} className="flex items-center gap-2 sm:gap-3">
                 <span className="font-medium text-sm sm:text-base px-3 py-1.5 bg-neutral-50 dark:bg-neutral-800 rounded-full">
                   {city}

@@ -75,7 +75,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  const cities = ["서울", "델리", "레", "조드푸르", "자이살메르", "바라나시", "델리", "서울"];
+  const cities = ["서울", "델리", "자이살메르", "우다이푸르", "자이푸르", "델리", "바라나시", "델리", "서울"];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
