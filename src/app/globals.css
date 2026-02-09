@@ -193,10 +193,29 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Bottom safe padding for content above tab bar */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* Touch-friendly tap targets */
 @media (max-width: 768px) {
   button, a, input, select, textarea {
     min-height: 44px;
+  }
+
+  /* Nav items don't need 44px min-height */
+  nav a {
+    min-height: auto;
   }
 
   /* Prevent zoom on input focus */

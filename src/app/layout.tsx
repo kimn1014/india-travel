@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "India 2025",
+    title: "India 2026",
   },
   formatDetection: {
     telephone: false,
@@ -44,7 +44,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navigation />
-        <main className="min-h-screen pt-14 pb-20 md:pt-16 md:pb-0">
+        <main className="min-h-screen pt-12 pb-24 md:pt-16 md:pb-0">
           {children}
         </main>
       </body>

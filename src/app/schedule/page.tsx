@@ -26,16 +26,16 @@ export default function SchedulePage() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-16">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-16">
       {/* Header */}
-      <div className="mb-8 sm:mb-12">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-1">여행 일정</h1>
-        <p className="text-sm text-neutral-500">2026.02.13 ~ 02.22 · 9박 10일</p>
+      <div className="mb-5 sm:mb-12">
+        <h1 className="text-xl sm:text-3xl font-bold mb-0.5 sm:mb-1">여행 일정</h1>
+        <p className="text-xs sm:text-sm text-neutral-500">2026.02.13 ~ 02.22 · 9박 10일</p>
       </div>
 
       {/* City Progress Bar */}
-      <div className="mb-8 sm:mb-10 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 sm:p-6">
-        <h3 className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-4">도시별 일정</h3>
+      <div className="mb-5 sm:mb-10 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+        <h3 className="text-[10px] sm:text-xs font-medium text-neutral-400 uppercase tracking-wider mb-3 sm:mb-4">도시별 일정</h3>
         <div className="flex gap-1 h-2 rounded-full overflow-hidden mb-4">
           {cityGroups.map((group, idx) => (
             <div
@@ -57,7 +57,7 @@ export default function SchedulePage() {
       </div>
 
       {/* Quick Day Navigation */}
-      <div className="mb-8 sm:mb-10">
+      <div className="mb-5 sm:mb-10">
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
           {itinerary.map((day) => (
             <button

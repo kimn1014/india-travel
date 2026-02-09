@@ -2,14 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  Home,
+  CalendarDays,
+  Hotel,
+  Wallet,
+  CloudSun,
+  FolderOpen,
+} from "lucide-react";
 
 const navItems = [
-  { href: "/", label: "홈" },
-  { href: "/schedule", label: "일정" },
-  { href: "/hotels", label: "숙소" },
-  { href: "/budget", label: "예산" },
-  { href: "/weather", label: "날씨" },
-  { href: "/resources", label: "자료" },
+  { href: "/", label: "홈", icon: Home },
+  { href: "/schedule", label: "일정", icon: CalendarDays },
+  { href: "/hotels", label: "숙소", icon: Hotel },
+  { href: "/budget", label: "예산", icon: Wallet },
+  { href: "/weather", label: "날씨", icon: CloudSun },
+  { href: "/resources", label: "자료", icon: FolderOpen },
 ];
 
 export default function Navigation() {
@@ -52,29 +60,31 @@ export default function Navigation() {
 
       {/* Mobile Navigation - Top Header */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800 safe-area-top">
-        <div className="flex items-center justify-center h-14 px-4">
-          <Link href="/" className="text-lg font-semibold tracking-tight">
+        <div className="flex items-center justify-center h-12 px-4">
+          <Link href="/" className="text-base font-semibold tracking-tight">
             India 2026
           </Link>
         </div>
       </header>
 
       {/* Mobile Navigation - Bottom Tab Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-2xl border-t border-neutral-200 dark:border-neutral-800 safe-area-bottom">
-        <div className="grid grid-cols-6 h-14">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-2xl border-t border-neutral-200 dark:border-neutral-800 safe-area-bottom">
+        <div className="grid grid-cols-6 h-16">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
+            const Icon = item.icon;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center justify-center transition-all duration-200 active:scale-95 text-sm font-medium ${
+                className={`flex flex-col items-center justify-center gap-0.5 transition-all duration-200 active:scale-90 ${
                   isActive
                     ? "text-neutral-900 dark:text-white"
                     : "text-neutral-400 dark:text-neutral-500"
                 }`}
               >
-                {item.label}
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} />
+                <span className="text-[10px] font-medium leading-none">{item.label}</span>
               </Link>
             );
           })}
