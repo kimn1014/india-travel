@@ -77,6 +77,22 @@ const defaultResources: Resource[] = [
     url: "/vouchers/booking_1697203885.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "bus-jsa-udr-0215",
+    type: "pdf",
+    title: "2/15 자이살메르→우다이푸르 야간버스 (BS Maharaja Travels)",
+    description: "20:45-06:45(+1) · A/C Sleeper · 좌석 L9/L10 · Booking: 3BQPHSXP",
+    url: "/vouchers/bus_JSA_UDR_0215.pdf",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "bus-udr-jai-0217",
+    type: "pdf",
+    title: "2/18 우다이푸르→자이푸르 야간버스 (Patel Travels)",
+    description: "01:00-08:45 · A/C Sleeper · 좌석 L8/L9 · Booking: 3BFFM366",
+    url: "/vouchers/bus_UDR_JAI_0217.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {

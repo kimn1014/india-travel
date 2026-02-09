@@ -229,14 +229,16 @@ export const itinerary: DaySchedule[] = [
     color: "#f59e0b",
     transport: {
       type: "car",
-      description: "자이살메르 → 우다이푸르 (야간 버스)",
-      time: "저녁 출발",
+      description: "자이살메르 → 우다이푸르 (야간 버스, BS Maharaja Travels)",
+      time: "20:45 출발 → 익일 06:45 도착",
     },
     activities: [
       { title: "자이살메르 관광", description: "골든포트, 하벨리 등" },
+      { time: "20:30", title: "B S MAHARAJA TRAVELS AIRPORT CIRCLE 집합", description: "승차지 연락처: 9461351919" },
+      { time: "20:45", title: "야간 버스 출발 (자이살메르 → 우다이푸르)", description: "A/C Sleeper (2+1) · 좌석 L9/L10 · Booking: 3BQPHSXP" },
     ],
     accommodation: "야간 버스",
-    note: "야간 버스로 우다이푸르 이동",
+    note: "야간 버스로 우다이푸르 이동 · 하차: Fatehpura Circle",
   },
   {
     day: 4,
@@ -247,7 +249,8 @@ export const itinerary: DaySchedule[] = [
     cityEn: "Udaipur",
     color: "#06b6d4",
     activities: [
-      { title: "우다이푸르 도착 및 관광", description: "호수의 도시 탐방" },
+      { time: "06:45", title: "우다이푸르 도착 (Fatehpura Circle)", description: "야간 버스 하차" },
+      { title: "우다이푸르 관광", description: "호수의 도시 탐방" },
     ],
     accommodation: "Parallel Hotel, Udaipur (패러렐 호텔)",
     note: "⚠️ 17~18일로 잘못 예약됨 → 16~17일로 일정 변경 문의 중 (호텔 및 여행사)",
@@ -262,14 +265,16 @@ export const itinerary: DaySchedule[] = [
     color: "#06b6d4",
     transport: {
       type: "car",
-      description: "우다이푸르 → 자이푸르 (야간 버스)",
-      time: "저녁 출발",
+      description: "우다이푸르 → 자이푸르 (야간 버스, Patel Travels)",
+      time: "2/18 01:00 출발 → 08:45 도착",
     },
     activities: [
       { title: "우다이푸르 관광" },
+      { time: "00:45", title: "Udaipole 승차지 집합 (Jain Parshwanath Travels)", description: "승차지 연락처: 9409413146" },
+      { time: "01:00", title: "야간 버스 출발 (우다이푸르 → 자이푸르)", description: "A/C Sleeper (2+1) · 좌석 L8/L9 · Booking: 3BFFM366" },
     ],
     accommodation: "야간 버스",
-    note: "야간 버스로 자이푸르 이동",
+    note: "야간 버스로 자이푸르 이동 · 하차: ITC Rajputana Sheraton 근처 (기차역 맞은편)",
   },
   {
     day: 6,
@@ -280,7 +285,8 @@ export const itinerary: DaySchedule[] = [
     cityEn: "Jaipur",
     color: "#ec4899",
     activities: [
-      { title: "자이푸르 도착 및 관광", description: "핑크시티 탐방" },
+      { time: "08:45", title: "자이푸르 도착 (ITC Rajputana Sheraton 근처)", description: "야간 버스 하차" },
+      { title: "자이푸르 관광", description: "핑크시티 탐방" },
     ],
     accommodation: "자이푸르 숙소",
   },
