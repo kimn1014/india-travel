@@ -37,6 +37,38 @@ const defaultResources: Resource[] = [
     url: "/vouchers/booking_1697174974.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "flight-del-jsa-0214",
+    type: "pdf",
+    title: "2/14 델리→자이살메르 항공권 (AI-1783)",
+    description: "13:30-15:00 · PNR: DWRIFE · 좌석 24A/24B · ₹12,571",
+    url: "/vouchers/flight_DEL_JSA_0214.pdf",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "flight-jai-del-0219",
+    type: "pdf",
+    title: "2/19 자이푸르→델리 항공권 (IX-1289)",
+    description: "18:55-19:55 · PNR: K158RL · 좌석 26E/26F · ₹6,631",
+    url: "/vouchers/flight_JAI_DEL_0219.pdf",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "flight-hdo-vns-0220",
+    type: "pdf",
+    title: "2/20 델리(힌돈)→바라나시 항공권 (6E-2571)",
+    description: "09:45-11:00 · PNR: W5LE4S · 좌석 21D/21E · ₹13,719",
+    url: "/vouchers/flight_HDO_VNS_0220.pdf",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "flight-vns-del-0221",
+    type: "pdf",
+    title: "2/21 바라나시→델리 항공권 (IX-1252)",
+    description: "14:45-16:20 · PNR: TZUT5L · 좌석 26A/26B · ₹11,932",
+    url: "/vouchers/flight_VNS_DEL_0221.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {

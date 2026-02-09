@@ -3,14 +3,11 @@
 import { useState } from "react";
 
 const cities = [
-  { name: "Delhi", nameKo: "델리", lat: 28.6139, lng: 77.209 },
-  { name: "Mumbai", nameKo: "뭄바이", lat: 19.076, lng: 72.8777 },
-  { name: "Agra", nameKo: "아그라", lat: 27.1767, lng: 78.0081 },
-  { name: "Jaipur", nameKo: "자이푸르", lat: 26.9124, lng: 75.7873 },
-  { name: "Varanasi", nameKo: "바라나시", lat: 25.3176, lng: 82.9739 },
-  { name: "Goa", nameKo: "고아", lat: 15.2993, lng: 74.124 },
-  { name: "Kolkata", nameKo: "콜카타", lat: 22.5726, lng: 88.3639 },
-  { name: "Chennai", nameKo: "첸나이", lat: 13.0827, lng: 80.2707 },
+  { name: "Delhi", nameKo: "델리", lat: 28.6139, lng: 77.209, days: "D1, D10" },
+  { name: "Jaisalmer", nameKo: "자이살메르", lat: 26.9157, lng: 70.9083, days: "D2-D3" },
+  { name: "Udaipur", nameKo: "우다이푸르", lat: 24.5854, lng: 73.7125, days: "D4-D5" },
+  { name: "Jaipur", nameKo: "자이푸르", lat: 26.9124, lng: 75.7873, days: "D6-D7" },
+  { name: "Varanasi", nameKo: "바라나시", lat: 25.3176, lng: 82.9739, days: "D8-D9" },
 ];
 
 interface WeatherData {
@@ -70,11 +67,11 @@ export default function WeatherPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-16">
       <div className="mb-8 sm:mb-10">
         <h1 className="text-2xl sm:text-3xl font-bold mb-1">인도 날씨</h1>
-        <p className="text-sm text-neutral-500">주요 도시의 현재 날씨를 확인하세요</p>
+        <p className="text-sm text-neutral-500">여행 도시의 현재 날씨를 확인하세요</p>
       </div>
 
       {/* City Selection */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-8">
         {cities.map((city) => (
           <button
             key={city.name}
@@ -86,8 +83,11 @@ export default function WeatherPage() {
             }`}
           >
             <p className="font-semibold">{city.nameKo}</p>
-            <p className={`text-sm ${selectedCity.name === city.name ? "opacity-60" : "text-neutral-500"}`}>
+            <p className={`text-xs ${selectedCity.name === city.name ? "opacity-60" : "text-neutral-500"}`}>
               {city.name}
+            </p>
+            <p className={`text-[10px] mt-1 ${selectedCity.name === city.name ? "opacity-40" : "text-neutral-400"}`}>
+              {city.days}
             </p>
           </button>
         ))}
@@ -159,8 +159,8 @@ export default function WeatherPage() {
             <div className="p-4 bg-neutral-50 dark:bg-neutral-800/50 rounded-xl border border-neutral-200 dark:border-neutral-700">
               <h3 className="font-medium mb-2 text-sm">기후</h3>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                2월은 인도 여행의 최적기입니다. 북부 지역은 15-25°C로 쾌적하며,
-                남부는 25-30°C로 따뜻합니다.
+                2월은 인도 여행의 최적기입니다. 라자스탄(자이살메르·우다이푸르·자이푸르)은
+                낮 20-28°C, 밤 8-15°C. 바라나시는 15-25°C로 쾌적합니다.
               </p>
             </div>
 
@@ -168,7 +168,7 @@ export default function WeatherPage() {
               <h3 className="font-medium mb-2 text-sm">복장</h3>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 낮에는 가벼운 옷, 아침/저녁에는 재킷이나 긴팔이 필요합니다.
-                사원 방문시 긴 바지와 어깨를 덮는 옷 필수.
+                사원 방문시 긴 바지와 어깨를 덮는 옷 필수. 사막 투어시 스카프 권장.
               </p>
             </div>
 
@@ -176,7 +176,7 @@ export default function WeatherPage() {
               <h3 className="font-medium mb-2 text-sm">자외선</h3>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 자외선이 강하므로 선크림, 선글라스, 모자를 챙기세요.
-                특히 오후 12-4시 야외 활동 주의.
+                특히 자이살메르 사막 지역은 직사광선 주의.
               </p>
             </div>
 
@@ -184,7 +184,7 @@ export default function WeatherPage() {
               <h3 className="font-medium mb-2 text-sm">건강</h3>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 수분 섭취를 충분히 하고, 생수만 마시세요.
-                손 소독제와 기본 상비약 준비 권장.
+                손 소독제와 기본 상비약 준비 권장. 야간 버스 탑승 시 따뜻한 옷 필수.
               </p>
             </div>
           </div>
