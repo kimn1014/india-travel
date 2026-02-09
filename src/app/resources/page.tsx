@@ -69,6 +69,14 @@ const defaultResources: Resource[] = [
     url: "/vouchers/flight_VNS_DEL_0221.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "hotel-delhi-day7-voucher",
+    type: "pdf",
+    title: "델리 숙소 바우처 - Hotel Ramhan Palace",
+    description: "2/19~2/20 (1박) Standard Double Room (Twin Beds) · 예약번호: 1697203885 (Agoda) · ₩53,084",
+    url: "/vouchers/booking_1697203885.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {

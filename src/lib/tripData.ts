@@ -301,7 +301,22 @@ export const itinerary: DaySchedule[] = [
       { title: "자이푸르 관광" },
       { time: "18:55", title: "자이푸르(JAI) → 뉴델리(DEL) 출발", description: "Air-India Express IX-1289 · 좌석 26E/26F" },
     ],
-    accommodation: "뉴델리 숙소",
+    accommodation: "Hotel Ramhan Palace, New Delhi",
+    accommodationDetails: {
+      name: "호텔 람한 팰리스",
+      nameEn: "Hotel Ramhan Palace",
+      address: "A-125, Mahipalpur Extension, NH 8 Highway, Near IGI Airport T3 Terminal, New Delhi, 110037",
+      tel: "+918929150993",
+      reservationNo: "1697203885",
+      roomType: "Standard Double Room (Twin Beds)",
+      checkIn: "2026-02-19",
+      meal: "조식 포함",
+      guests: 2,
+      nights: 1,
+      period: "2026-02-19 ~ 2026-02-20",
+      voucherUrl: "/vouchers/booking_1697203885.pdf",
+    },
+    note: "공항 T3 근처 | Wi-Fi·주차·조식 포함 | Agoda 예약",
   },
   {
     day: 8,
@@ -428,6 +443,14 @@ export const defaultExpenses: Expense[] = [
     amount: 11932,
     currency: "INR",
     category: "flight",
+  },
+  {
+    id: "hotel-delhi-day7",
+    date: "2026-02-19",
+    description: "델리 숙소 - Hotel Ramhan Palace (1박)",
+    amount: 53084,
+    currency: "KRW",
+    category: "accommodation",
   },
 ];
 
