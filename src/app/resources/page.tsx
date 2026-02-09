@@ -101,6 +101,14 @@ const defaultResources: Resource[] = [
     url: "/vouchers/booking_1697209146.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "airbnb-varanasi-day8-voucher",
+    type: "pdf",
+    title: "바라나시 숙소 - Airbnb 일출 및 강 전망 객실",
+    description: "2/20~2/21 (1박) Pandey Ghat · 예약코드: HMS59YB824 · ₩88,632",
+    url: "/vouchers/airbnb_HMS59YB824.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {
