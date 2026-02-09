@@ -211,7 +211,12 @@ export default function SchedulePage() {
                         {/* Accommodation */}
                         {day.accommodation && (
                           <div className="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700">
-                            <p className="text-xs font-medium text-neutral-500 mb-2 uppercase tracking-wide">숙소</p>
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">숙소</p>
+                              {(day.accommodationDetails || day.accommodation === "야간 버스" || day.accommodation.includes("숙소 없음")) && (
+                                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900">확정</span>
+                              )}
+                            </div>
                             <p className="text-sm font-medium">{day.accommodation}</p>
                             {day.accommodationDetails && (
                               <div className="mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700 space-y-1.5">

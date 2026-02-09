@@ -216,16 +216,20 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           {/* Accommodation Status */}
           {(() => {
-            const confirmedHotels = itinerary.filter((d) => d.accommodationDetails).length;
-            const totalNights = itinerary.filter((d) => d.accommodation && d.accommodation !== "비행기 내" && !d.accommodation.includes("숙소 없음")).length;
+            const totalNights = itinerary.filter((d) => d.accommodation && d.accommodation !== "비행기 내").length;
+            const confirmedNights = itinerary.filter((d) =>
+              d.accommodationDetails ||
+              d.accommodation === "야간 버스" ||
+              (d.accommodation && d.accommodation.includes("숙소 없음"))
+            ).length;
             return (
               <Link href="/hotels" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
                 <div className="flex items-center gap-2 mb-3">
                   <Hotel size={14} className="text-neutral-400" />
                   <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">숙소</span>
                 </div>
-                <p className="text-2xl sm:text-3xl font-bold">{confirmedHotels}<span className="text-sm font-normal text-neutral-400">/{totalNights}</span></p>
-                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 확정</p>
+                <p className="text-2xl sm:text-3xl font-bold">{confirmedNights}<span className="text-sm font-normal text-neutral-400">/{totalNights}</span></p>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">확정 완료</p>
               </Link>
             );
           })()}
