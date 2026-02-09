@@ -29,6 +29,14 @@ const defaultResources: Resource[] = [
     url: "/vouchers/voucher_HH2632177268.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "hotel-jaisalmer-voucher",
+    type: "pdf",
+    title: "자이살메르 숙소 예약 - Rupal Residency",
+    description: "2/14~2/15 (1박) Premium Room · 예약번호: 1697174974 (Agoda)",
+    url: "/vouchers/booking_1697174974.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {

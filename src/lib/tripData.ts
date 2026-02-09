@@ -144,6 +144,7 @@ export interface DaySchedule {
     guests: number;
     nights: number;
     period: string;
+    voucherUrl?: string;
   };
   note?: string;
 }
@@ -179,6 +180,7 @@ export const itinerary: DaySchedule[] = [
       guests: 2,
       nights: 1,
       period: "2026-02-13 ~ 2026-02-14",
+      voucherUrl: "/vouchers/voucher_HH2632177268.pdf",
     },
     note: "공항 바로 옆 | 체크인 18:00 | 조식 불포함",
   },
@@ -199,8 +201,22 @@ export const itinerary: DaySchedule[] = [
       { title: "완전한 휴식", description: "해발 3,500m 고산 지대이므로 도착 직후 호텔에서 최소 24시간은 누워 있어야 고산병을 예방할 수 있습니다" },
     ],
     snapPoint: "호텔 창밖으로 보이는 설산의 거친 질감을 필름에 담아보세요",
-    accommodation: "레 메인 마켓(Leh Main Market) 인근",
-    note: "편의시설 접근성 좋음",
+    accommodation: "Rupal Residency, Jaisalmer",
+    accommodationDetails: {
+      name: "루팔 레지던시",
+      nameEn: "Rupal Residency",
+      address: "Jaisalmer - Sam - Dhanana Rd, Ram Kund, Jaisalmer, India, 345001",
+      tel: "+919460807000",
+      reservationNo: "1697174974",
+      roomType: "Premium Room (Twin Beds)",
+      checkIn: "2026-02-14",
+      meal: "조식 포함",
+      guests: 2,
+      nights: 1,
+      period: "2026-02-14 ~ 2026-02-15",
+      voucherUrl: "/vouchers/booking_1697174974.pdf",
+    },
+    note: "조식·수영장·Wi-Fi·웰컴드링크·주차·피트니스 포함 | Agoda 예약",
   },
   {
     day: 3,
@@ -365,6 +381,14 @@ export const defaultExpenses: Expense[] = [
     date: "2026-02-13",
     description: "델리 숙소 - Pride Plaza Hotel Aerocity (1박)",
     amount: 238556,
+    currency: "KRW",
+    category: "accommodation",
+  },
+  {
+    id: "hotel-jaisalmer-day2",
+    date: "2026-02-14",
+    description: "자이살메르 숙소 - Rupal Residency (1박)",
+    amount: 137796,
     currency: "KRW",
     category: "accommodation",
   },

@@ -215,14 +215,16 @@ export default function HotelsPage() {
                     </div>
 
                     {/* Voucher Link */}
-                    <a
-                      href="/vouchers/voucher_HH2632177268.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 flex items-center justify-center gap-2 w-full py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors active:scale-[0.98]"
-                    >
-                      바우처 PDF 보기 &rarr;
-                    </a>
+                    {day.accommodationDetails!.voucherUrl && (
+                      <a
+                        href={day.accommodationDetails!.voucherUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 flex items-center justify-center gap-2 w-full py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors active:scale-[0.98]"
+                      >
+                        바우처 PDF 보기 &rarr;
+                      </a>
+                    )}
                   </div>
                 </div>
               )}
