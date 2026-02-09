@@ -249,7 +249,8 @@ export const itinerary: DaySchedule[] = [
     activities: [
       { title: "우다이푸르 도착 및 관광", description: "호수의 도시 탐방" },
     ],
-    accommodation: "우다이푸르 숙소",
+    accommodation: "Parallel Hotel, Udaipur (패러렐 호텔)",
+    note: "⚠️ 17~18일로 잘못 예약됨 → 16~17일로 일정 변경 문의 중 (호텔 및 여행사)",
   },
   {
     day: 5,
