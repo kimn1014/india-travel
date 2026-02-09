@@ -93,6 +93,14 @@ const defaultResources: Resource[] = [
     url: "/vouchers/bus_UDR_JAI_0217.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "hotel-jaipur-day6-voucher",
+    type: "pdf",
+    title: "자이푸르 숙소 바우처 - Umaid Bhawan Heritage Hotel",
+    description: "2/18~2/19 (1박) Royal Suite (Twin Beds) · 예약번호: 1697209146 (Agoda) · ₩139,242",
+    url: "/vouchers/booking_1697209146.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {
