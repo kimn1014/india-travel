@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { tripInfo, flights, itinerary } from "@/lib/tripData";
+import { tripInfo, flights, itinerary, defaultExpenses, defaultPlaces, exchangeRate } from "@/lib/tripData";
 import { useEffect, useState } from "react";
 import {
   CalendarDays,
@@ -10,6 +10,10 @@ import {
   FolderOpen,
   Plane,
   Bus,
+  Hotel,
+  CheckCircle2,
+  Circle,
+  MapPin,
 } from "lucide-react";
 
 function getTimeUntilTrip() {
@@ -193,6 +197,105 @@ export default function Home() {
                 <h3 className="font-semibold text-sm sm:text-base">{item.label}</h3>
                 <p className="text-[10px] sm:text-sm text-neutral-500 mt-0.5">{item.desc}</p>
               </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Preparation Status */}
+      <section className="mb-8 sm:mb-20">
+        <div className="flex items-center gap-3 mb-4 sm:mb-8">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center shrink-0">
+            <CheckCircle2 size={18} className="text-white dark:text-neutral-900 sm:[width:20px] sm:[height:20px]" />
+          </div>
+          <div>
+            <h2 className="text-lg sm:text-2xl font-bold">준비 현황</h2>
+            <p className="text-[10px] sm:text-sm text-neutral-500">예약 및 경비 확인</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+          {/* Accommodation Status */}
+          {(() => {
+            const confirmedHotels = itinerary.filter((d) => d.accommodationDetails).length;
+            const totalNights = itinerary.filter((d) => d.accommodation && d.accommodation !== "비행기 내" && !d.accommodation.includes("숙소 없음")).length;
+            return (
+              <Link href="/hotels" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+                <div className="flex items-center gap-2 mb-3">
+                  <Hotel size={14} className="text-neutral-400" />
+                  <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">숙소</span>
+                </div>
+                <p className="text-2xl sm:text-3xl font-bold">{confirmedHotels}<span className="text-sm font-normal text-neutral-400">/{totalNights}</span></p>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 확정</p>
+              </Link>
+            );
+          })()}
+          {/* Flights Status */}
+          <Link href="/resources" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+            <div className="flex items-center gap-2 mb-3">
+              <Plane size={14} className="text-neutral-400" />
+              <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">항공권</span>
+            </div>
+            <p className="text-2xl sm:text-3xl font-bold">6<span className="text-sm font-normal text-neutral-400">/6</span></p>
+            <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 완료</p>
+          </Link>
+          {/* Bus Status */}
+          <Link href="/resources" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+            <div className="flex items-center gap-2 mb-3">
+              <Bus size={14} className="text-neutral-400" />
+              <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">야간버스</span>
+            </div>
+            <p className="text-2xl sm:text-3xl font-bold">2<span className="text-sm font-normal text-neutral-400">/2</span></p>
+            <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 완료</p>
+          </Link>
+          {/* Budget Status */}
+          {(() => {
+            const totalKRW = defaultExpenses.reduce((sum, e) => {
+              if (e.currency === "KRW") return sum + e.amount;
+              return sum + Math.round(e.amount * exchangeRate.INR_TO_KRW);
+            }, 0);
+            return (
+              <Link href="/budget" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+                <div className="flex items-center gap-2 mb-3">
+                  <Wallet size={14} className="text-neutral-400" />
+                  <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">확정 경비</span>
+                </div>
+                <p className="text-2xl sm:text-3xl font-bold">{Math.round(totalKRW / 10000)}<span className="text-sm font-normal text-neutral-400">만원</span></p>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 확정분</p>
+              </Link>
+            );
+          })()}
+        </div>
+      </section>
+
+      {/* City Highlights */}
+      <section className="mb-8 sm:mb-20">
+        <div className="flex items-center gap-3 mb-4 sm:mb-8">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center shrink-0">
+            <MapPin size={18} className="text-white dark:text-neutral-900 sm:[width:20px] sm:[height:20px]" />
+          </div>
+          <div>
+            <h2 className="text-lg sm:text-2xl font-bold">방문 도시</h2>
+            <p className="text-[10px] sm:text-sm text-neutral-500">5개 도시 탐방</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
+          {defaultPlaces.map((place, idx) => {
+            const cityDays = itinerary.filter((d) => d.cityEn.includes(place.name) || d.city.includes(place.nameKo));
+            return (
+              <div
+                key={place.id}
+                className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 relative overflow-hidden"
+              >
+                <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900">
+                    {idx + 1}
+                  </span>
+                  <span className="text-[10px] sm:text-xs text-neutral-400">{cityDays.length > 0 ? `${cityDays.length}일` : ""}</span>
+                </div>
+                <h3 className="font-bold text-sm sm:text-base">{place.nameKo}</h3>
+                <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">{place.name}</p>
+                <p className="text-[10px] sm:text-xs text-neutral-500 mt-2 leading-relaxed">{place.description}</p>
+              </div>
             );
           })}
         </div>
