@@ -20,6 +20,15 @@
   --status-confirmed: #22c55e;
   --status-pending: #f59e0b;
   --status-unconfirmed: #ef4444;
+
+  /* Animation Timing Tokens */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Easing Functions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @theme inline {
@@ -57,7 +66,8 @@ body {
   }
 }
 
-/* Smooth animations */
+/* ===== Keyframes ===== */
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -71,6 +81,35 @@ body {
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scaleOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(8px); }
+}
+
+@keyframes slideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(100%); }
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(8px); }
+}
+
+@keyframes backdropOut {
+  from { opacity: 1; backdrop-filter: blur(8px); }
+  to { opacity: 0; backdrop-filter: blur(0px); }
+}
+
+@keyframes fillWidth {
+  from { width: 0%; }
 }
 
 @keyframes shimmer {
@@ -98,16 +137,38 @@ body {
   to { opacity: 0; transform: translateY(-8px) scale(0.95); }
 }
 
+/* ===== Animation Classes ===== */
+
 .animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn var(--duration-slow) var(--ease-out-expo) forwards;
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 0.7s var(--ease-out-expo) forwards;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scaleIn var(--duration-normal) var(--ease-out-expo) forwards;
+}
+
+.animate-scale-out {
+  animation: scaleOut var(--duration-normal) var(--ease-out-expo) forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut var(--duration-normal) var(--ease-out-expo) forwards;
+}
+
+.animate-slide-down-out {
+  animation: slideDown var(--duration-normal) var(--ease-out-expo) forwards;
+}
+
+.animate-backdrop-in {
+  animation: backdropIn var(--duration-normal) var(--ease-out-expo) forwards;
+}
+
+.animate-backdrop-out {
+  animation: backdropOut var(--duration-normal) var(--ease-out-expo) forwards;
 }
 
 .animate-shimmer {
@@ -124,7 +185,7 @@ body {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.4s var(--ease-out-expo) forwards;
 }
 
 .animate-pulse-soft {
@@ -132,14 +193,45 @@ body {
 }
 
 .animate-toast-in {
-  animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: toastIn var(--duration-normal) var(--ease-out-expo) forwards;
 }
 
 .animate-toast-out {
-  animation: toastOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: toastOut var(--duration-fast) var(--ease-out-expo) forwards;
 }
 
-/* Custom scrollbar */
+.animate-fill-width {
+  animation: fillWidth var(--duration-slow) var(--ease-out-expo) forwards;
+}
+
+/* ===== Scroll Reveal ===== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Stagger Delay Classes ===== */
+
+.stagger-1 { transition-delay: 50ms; }
+.stagger-2 { transition-delay: 100ms; }
+.stagger-3 { transition-delay: 150ms; }
+.stagger-4 { transition-delay: 200ms; }
+.stagger-5 { transition-delay: 250ms; }
+.stagger-6 { transition-delay: 300ms; }
+.stagger-7 { transition-delay: 350ms; }
+.stagger-8 { transition-delay: 400ms; }
+.stagger-9 { transition-delay: 450ms; }
+.stagger-10 { transition-delay: 500ms; }
+
+/* ===== Custom scrollbar ===== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -179,22 +271,24 @@ a,
 input,
 select,
 textarea {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--duration-normal) var(--ease-out-expo);
 }
 
 /* Card hover effect */
 .card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--duration-normal) var(--ease-out-expo);
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.15),
+              0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
 @media (prefers-color-scheme: dark) {
   .card-hover:hover {
-    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -202,7 +296,7 @@ textarea {
 .btn-primary {
   background: #0a0a0a;
   color: #ffffff;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--duration-normal) var(--ease-out-expo);
 }
 
 .btn-primary:hover {
@@ -324,6 +418,15 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* Mobile touch feedback */
+.tap-feedback {
+  transition: transform 50ms ease;
+}
+
+.tap-feedback:active {
+  transform: scale(0.95);
+}
+
 /* Touch-friendly tap targets */
 @media (max-width: 768px) {
   button, a, input, select, textarea {
@@ -443,5 +546,41 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-color-scheme: dark) {
   .hero-gradient {
     background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+  }
+}
+
+/* Grid-based accordion (smooth height transition) */
+.accordion-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-normal) var(--ease-out-expo);
+}
+
+.accordion-grid.open {
+  grid-template-rows: 1fr;
+}
+
+.accordion-grid > div {
+  overflow: hidden;
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .card-hover:hover {
+    transform: none;
   }
 }

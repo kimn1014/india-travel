@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import ScrollReveal from "@/components/ScrollReveal";
 import { Expense, defaultExpenses, exchangeRate, budget } from "@/lib/tripData";
 import {
   Plus,
@@ -47,6 +48,7 @@ export default function BudgetPage() {
   const [inrAmount, setInrAmount] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("date");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
+  const [barAnimated, setBarAnimated] = useState(false);
   const [newExpense, setNewExpense] = useState({
     date: "",
     description: "",
@@ -70,6 +72,7 @@ export default function BudgetPage() {
         setExpenses(savedItems);
       }
     }
+    setTimeout(() => setBarAnimated(true), 300);
   }, []);
 
   const saveExpenses = (items: Expense[]) => {
@@ -446,9 +449,9 @@ export default function BudgetPage() {
           </div>
           <div className="w-full bg-neutral-100 dark:bg-neutral-800 rounded-full h-1.5 sm:h-2">
             <div
-              className="bg-neutral-900 dark:bg-white h-1.5 sm:h-2 rounded-full transition-all"
+              className="bg-neutral-900 dark:bg-white h-1.5 sm:h-2 rounded-full transition-all duration-700"
               style={{
-                width: `${Math.min((totalKrw / budget.travel) * 100, 100)}%`,
+                width: barAnimated ? `${Math.min((totalKrw / budget.travel) * 100, 100)}%` : "0%",
               }}
             />
           </div>
@@ -496,16 +499,17 @@ export default function BudgetPage() {
           <div className="w-full h-6 sm:h-8 rounded-full overflow-hidden flex mb-4 sm:mb-6 bg-neutral-100 dark:bg-neutral-800">
             {expensesByCategory
               .filter((cat) => cat.total > 0)
-              .map((cat) => {
+              .map((cat, catIdx) => {
                 const widthPercent = (cat.total / categoryBarTotal) * 100;
                 return (
                   <div
                     key={cat.id}
-                    className="h-full transition-all relative group"
+                    className="h-full relative group"
                     style={{
-                      width: `${widthPercent}%`,
+                      width: barAnimated ? `${widthPercent}%` : "0%",
                       backgroundColor: cat.color,
-                      minWidth: widthPercent > 0 ? "4px" : "0",
+                      minWidth: barAnimated && widthPercent > 0 ? "4px" : "0",
+                      transition: `width 600ms cubic-bezier(0.16, 1, 0.3, 1) ${catIdx * 80}ms`,
                     }}
                     title={`${cat.label}: ₩${cat.total.toLocaleString(undefined, { maximumFractionDigits: 0 })} (${widthPercent.toFixed(1)}%)`}
                   />

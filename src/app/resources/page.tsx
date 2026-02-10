@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Plus, X, Search, Star, Phone, FileText, Link2, Image, AlertCircle, MapPin } from "lucide-react";
 import { emergencyContacts } from "@/lib/tripData";
 import Modal from "@/components/Modal";
+import ScrollReveal from "@/components/ScrollReveal";
 
 interface Resource {
   id: string;
@@ -348,7 +349,7 @@ export default function ResourcesPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="자료 검색 (제목, 설명)"
-          className="w-full pl-10 pr-4 py-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-900 focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors text-sm"
+          className="w-full pl-10 pr-4 py-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-900 focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 focus:shadow-[0_0_0_3px_rgba(0,0,0,0.05)] dark:focus:shadow-[0_0_0_3px_rgba(255,255,255,0.05)] transition-all duration-300 text-sm"
         />
         {searchQuery && (
           <button
@@ -420,14 +421,15 @@ export default function ResourcesPage() {
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {group.resources.map((resource) => {
+                {group.resources.map((resource, rIdx) => {
                   const style = typeStyles[resource.type];
                   const isFav = favorites.includes(resource.id);
 
                   return (
                     <div
                       key={resource.id}
-                      className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all group ${style.border}`}
+                      className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 sm:p-6 hover:border-neutral-400 dark:hover:border-neutral-600 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group ${style.border}`}
+                      style={{ transitionDelay: `${rIdx * 50}ms` }}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div
@@ -493,6 +495,7 @@ export default function ResourcesPage() {
       )}
 
       {/* Emergency Contacts Section */}
+      <ScrollReveal>
       <div className="mt-16">
         <div className="flex items-center gap-2.5 mb-6">
           <div className="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-950/30 text-red-500 flex items-center justify-center">
@@ -532,6 +535,7 @@ export default function ResourcesPage() {
           ))}
         </div>
       </div>
+      </ScrollReveal>
 
       {/* Add Resource Modal */}
       <Modal

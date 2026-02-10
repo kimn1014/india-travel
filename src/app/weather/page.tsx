@@ -239,7 +239,9 @@ export default function WeatherPage() {
               <button
                 key={city.name}
                 onClick={() => handleCitySelect(city)}
-                className="relative overflow-hidden rounded-xl border transition-all text-left"
+                className={`relative overflow-hidden rounded-xl border transition-all duration-300 text-left ${
+                  selectedCity.name === city.name ? "scale-[1.02] shadow-md" : "hover:scale-[1.01]"
+                }`}
                 style={
                   selectedCity.name === city.name
                     ? { backgroundColor: colors?.hex, color: "white", borderColor: "transparent" }
@@ -301,7 +303,7 @@ export default function WeatherPage() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Current Weather Card */}
         <div
-          className={`border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 transition-colors ${
+          className={`border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 transition-all duration-500 ${
             weather ? getTempGradient(weather.temperature) : "bg-white dark:bg-neutral-900"
           }`}
         >
@@ -440,12 +442,13 @@ export default function WeatherPage() {
           </div>
         ) : dailyForecast.length > 0 ? (
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
-            {dailyForecast.map((day) => (
+            {dailyForecast.map((day, dayIdx) => (
               <div
                 key={day.date}
-                className={`min-w-[100px] flex-shrink-0 rounded-xl p-3 text-center border border-neutral-200 dark:border-neutral-700 ${getTempGradient(
+                className={`min-w-[100px] flex-shrink-0 rounded-xl p-3 text-center border border-neutral-200 dark:border-neutral-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${getTempGradient(
                   day.maxTemp
                 )}`}
+                style={{ animationDelay: `${dayIdx * 50}ms` }}
               >
                 <p className="text-xs text-neutral-500 mb-2 font-medium">{formatForecastDate(day.date)}</p>
                 <span className="text-2xl block mb-1">{getWeatherEmoji(day.weatherCode)}</span>

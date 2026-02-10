@@ -162,7 +162,7 @@ export default function HotelsPage() {
                     {n.date}
                   </p>
                   {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-[10px] font-medium px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-[10px] font-medium px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-200 pointer-events-none z-10">
                     {n.city}
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function HotelsPage() {
 
       {/* Accommodation List */}
       <div className="space-y-3 sm:space-y-4">
-        {filteredAccommodations.map((day) => {
+        {filteredAccommodations.map((day, idx) => {
           const isConfirmed = !!day.accommodationDetails;
           const isExpanded = expandedId === day.day;
           const isUnconfirmedUdaipur =
@@ -371,13 +371,8 @@ export default function HotelsPage() {
 
               {/* Expanded Details (confirmed only) */}
               {isConfirmed && (
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    isExpanded
-                      ? "max-h-[800px] opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
+                <div className={`accordion-grid ${isExpanded ? "open" : ""}`}>
+                  <div>
                   <div className="px-4 sm:px-5 pb-5 sm:pb-6 border-t border-neutral-100 dark:border-neutral-800 pt-4">
                     {/* Hotel Name English */}
                     <p className="text-lg sm:text-xl font-bold mb-1">
@@ -564,6 +559,7 @@ export default function HotelsPage() {
                       </a>
                     )}
                   </div>
+                </div>
                 </div>
               )}
             </div>

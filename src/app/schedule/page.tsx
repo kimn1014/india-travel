@@ -305,7 +305,8 @@ export default function SchedulePage() {
                     </button>
 
                     {/* Expanded Content */}
-                    <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <div className={`accordion-grid ${isExpanded ? "open" : ""}`}>
+                      <div>
                       <div className="px-4 sm:px-5 pb-5 sm:pb-6 space-y-4 border-t border-neutral-100 dark:border-neutral-800 pt-4">
                         {/* Transport */}
                         {day.transport && (
@@ -481,6 +482,7 @@ export default function SchedulePage() {
                         )}
                       </div>
                     </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -531,7 +533,7 @@ export default function SchedulePage() {
 
       {/* Toast Notification */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-full shadow-lg animate-[fadeIn_0.2s_ease-out]">
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-5 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-full shadow-lg animate-toast-in">
           {toast}
         </div>
       )}

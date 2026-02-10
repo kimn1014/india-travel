@@ -33,9 +33,18 @@ function getDDay(): number {
 export default function Navigation() {
   const pathname = usePathname();
   const [dday, setDday] = useState<number | null>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setDday(getDDay());
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const currentPageLabel = navItems.find((item) => item.href === pathname)?.label || "홈";
@@ -43,7 +52,11 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Navigation - Top Bar */}
-      <nav className="hidden md:block fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800">
+      <nav className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/90 dark:bg-neutral-900/90 backdrop-blur-2xl border-b border-neutral-200/80 dark:border-neutral-800/80 shadow-sm"
+          : "bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800"
+      }`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <Link
@@ -70,13 +83,19 @@ export default function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
                       isActive
                         ? "text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800"
                         : "text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                     }`}
                   >
                     {item.label}
+                    {/* Active underline indicator */}
+                    <span
+                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full bg-orange-500 transition-all duration-300 ${
+                        isActive ? "w-4 opacity-100" : "w-0 opacity-0"
+                      }`}
+                    />
                   </Link>
                 );
               })}
@@ -86,7 +105,11 @@ export default function Navigation() {
       </nav>
 
       {/* Mobile Navigation - Top Header */}
-      <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800 safe-area-top">
+      <header className={`md:hidden fixed top-0 left-0 right-0 z-50 safe-area-top transition-all duration-300 ${
+        scrolled
+          ? "bg-white/90 dark:bg-neutral-900/90 backdrop-blur-2xl border-b border-neutral-200/80 dark:border-neutral-800/80 shadow-sm"
+          : "bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800"
+      }`}>
         <div className="flex items-center justify-between h-12 px-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-base font-semibold tracking-tight">India 2026</span>
@@ -101,7 +124,7 @@ export default function Navigation() {
       </header>
 
       {/* Mobile Navigation - Bottom Tab Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-2xl border-t border-neutral-200 dark:border-neutral-800 safe-area-bottom">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-2xl border-t border-neutral-200 dark:border-neutral-800 safe-area-bottom shadow-[0_-1px_3px_rgba(0,0,0,0.05)]">
         <div className="grid grid-cols-6 h-16">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -110,17 +133,20 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center justify-center gap-0.5 transition-all duration-200 active:scale-90 ${
+                className={`flex flex-col items-center justify-center gap-0.5 transition-all duration-300 active:scale-90 ${
                   isActive
                     ? "text-neutral-900 dark:text-white"
                     : "text-neutral-400 dark:text-neutral-500"
                 }`}
               >
                 <div className="relative">
-                  <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} />
-                  {isActive && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500" />
-                  )}
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} className="transition-all duration-300" />
+                  {/* Animated indicator dot */}
+                  <div
+                    className={`absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500 transition-all duration-300 ${
+                      isActive ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                    }`}
+                  />
                 </div>
                 <span className="text-[10px] font-medium leading-none">{item.label}</span>
               </Link>
