@@ -691,6 +691,15 @@ export const defaultExpenses: Expense[] = [
     category: "transport",
     isPreBooked: true,
   },
+  {
+    id: "hotel-hanatour-mistake",
+    date: "2026-02-16",
+    description: "숙소 실수 예약 (하나투어 · 취소불가 · 문의중)",
+    amount: 115852,
+    currency: "KRW",
+    category: "accommodation",
+    isPreBooked: true,
+  },
 ];
 
 export const exchangeRate = {
