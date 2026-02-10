@@ -112,6 +112,22 @@ const defaultResources: Resource[] = [
     url: "/vouchers/airbnb_HMS59YB824.pdf",
     createdAt: new Date().toISOString(),
   },
+  {
+    id: "receipt-ramhan-palace",
+    type: "pdf",
+    title: "델리 숙소 영수증 - Hotel Ramhan Palace (Agoda)",
+    description: "예약번호: 1697203885 · ₩53,084",
+    url: "/vouchers/receipt_1697203885.pdf",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "receipt-umaid-bhawan",
+    type: "pdf",
+    title: "자이푸르 숙소 영수증 - Umaid Bhawan Heritage Hotel (Agoda)",
+    description: "예약번호: 1697209146 · ₩139,242",
+    url: "/vouchers/receipt_1697209146.pdf",
+    createdAt: new Date().toISOString(),
+  },
 ];
 
 const typeConfig: Record<string, string> = {

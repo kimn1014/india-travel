@@ -700,7 +700,7 @@ export const exchangeRate = {
 };
 
 export const budget = {
-  flight: 1000000,
+  flight: 1021200,
   travel: 1800000,
 };
 
