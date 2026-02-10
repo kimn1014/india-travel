@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   Home,
   CalendarDays,
@@ -10,6 +11,7 @@ import {
   CloudSun,
   FolderOpen,
 } from "lucide-react";
+import { tripInfo } from "@/lib/tripData";
 
 const navItems = [
   { href: "/", label: "홈", icon: Home },
@@ -20,8 +22,23 @@ const navItems = [
   { href: "/resources", label: "자료", icon: FolderOpen },
 ];
 
+function getDDay(): number {
+  const today = new Date();
+  const tripStart = new Date(tripInfo.dates.start);
+  tripStart.setHours(0, 0, 0, 0);
+  const diff = tripStart.getTime() - today.getTime();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
 export default function Navigation() {
   const pathname = usePathname();
+  const [dday, setDday] = useState<number | null>(null);
+
+  useEffect(() => {
+    setDday(getDDay());
+  }, []);
+
+  const currentPageLabel = navItems.find((item) => item.href === pathname)?.label || "홈";
 
   return (
     <>
@@ -31,9 +48,19 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/"
-              className="text-lg font-semibold tracking-tight"
+              className="flex items-center gap-3 text-lg font-semibold tracking-tight"
             >
-              India 2026
+              <span>India 2026</span>
+              {dday !== null && dday > 0 && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500 text-white animate-pulse-soft">
+                  D-{dday}
+                </span>
+              )}
+              {dday !== null && dday <= 0 && dday >= -9 && (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500 text-white">
+                  여행 중
+                </span>
+              )}
             </Link>
 
             <div className="flex items-center gap-1">
@@ -43,10 +70,10 @@ export default function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "text-neutral-900 dark:text-white"
-                        : "text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+                        ? "text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800"
+                        : "text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                     }`}
                   >
                     {item.label}
@@ -60,10 +87,16 @@ export default function Navigation() {
 
       {/* Mobile Navigation - Top Header */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800 safe-area-top">
-        <div className="flex items-center justify-center h-12 px-4">
-          <Link href="/" className="text-base font-semibold tracking-tight">
-            India 2026
+        <div className="flex items-center justify-between h-12 px-4">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-base font-semibold tracking-tight">India 2026</span>
+            {dday !== null && dday > 0 && (
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-orange-500 text-white animate-pulse-soft">
+                D-{dday}
+              </span>
+            )}
           </Link>
+          <span className="text-xs font-medium text-neutral-400">{currentPageLabel}</span>
         </div>
       </header>
 
@@ -83,7 +116,12 @@ export default function Navigation() {
                     : "text-neutral-400 dark:text-neutral-500"
                 }`}
               >
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} />
+                <div className="relative">
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} />
+                  {isActive && (
+                    <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500" />
+                  )}
+                </div>
                 <span className="text-[10px] font-medium leading-none">{item.label}</span>
               </Link>
             );

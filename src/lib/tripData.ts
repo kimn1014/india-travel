@@ -111,6 +111,115 @@ export const defaultPlaces: Place[] = [
   },
 ];
 
+// City Info with highlights, tips, emergency numbers
+export interface CityInfo {
+  id: string;
+  nameKo: string;
+  nameEn: string;
+  color: string;
+  highlights: string[];
+  localTips: string[];
+}
+
+export const cityInfoMap: Record<string, CityInfo> = {
+  delhi: {
+    id: "delhi",
+    nameKo: "뉴델리",
+    nameEn: "New Delhi",
+    color: "#f97316",
+    highlights: ["레드포트", "쿠트브 미나르", "인디아 게이트", "찬드니 촉"],
+    localTips: ["지하철이 가장 편리", "릭샤 타기 전 가격 흥정 필수", "생수만 마시기"],
+  },
+  jaisalmer: {
+    id: "jaisalmer",
+    nameKo: "자이살메르",
+    nameEn: "Jaisalmer",
+    color: "#f59e0b",
+    highlights: ["자이살메르 포트", "파트원 키 하벨리", "샘 사구", "가디사르 호수"],
+    localTips: ["사막 투어 흥정 필수", "밤에 매우 추움 - 방한복 필수", "포트 안 게스트하우스 분위기 좋음"],
+  },
+  udaipur: {
+    id: "udaipur",
+    nameKo: "우다이푸르",
+    nameEn: "Udaipur",
+    color: "#06b6d4",
+    highlights: ["시티 팰리스", "피촐라 호수", "자그만디르", "몬순 팰리스"],
+    localTips: ["호수 근처 루프탑 레스토랑 추천", "보트 투어 필수", "일몰 감상 명소 많음"],
+  },
+  jaipur: {
+    id: "jaipur",
+    nameKo: "자이푸르",
+    nameEn: "Jaipur",
+    color: "#ec4899",
+    highlights: ["하와 마할", "앰버 포트", "잔타르 만타르", "시티 팰리스"],
+    localTips: ["앰버 포트 아침 일찍 방문 추천", "쇼핑 명소 - 조하리 바자르", "핑크시티 걸어서 둘러보기 좋음"],
+  },
+  varanasi: {
+    id: "varanasi",
+    nameKo: "바라나시",
+    nameEn: "Varanasi",
+    color: "#a855f7",
+    highlights: ["갠지스 강 가트", "카시 비슈와나트 사원", "아르띠 의식", "사르나트"],
+    localTips: ["새벽 보트 투어 필수", "골목이 매우 좁음 - 미니멀 짐 추천", "갠지스 강물 만지지 않기"],
+  },
+};
+
+// City color mapping
+export const cityColors: Record<string, { bg: string; text: string; hex: string; light: string }> = {
+  DEL: { bg: "bg-orange-500", text: "text-white", hex: "#f97316", light: "bg-orange-50 dark:bg-orange-950/30" },
+  delhi: { bg: "bg-orange-500", text: "text-white", hex: "#f97316", light: "bg-orange-50 dark:bg-orange-950/30" },
+  JSA: { bg: "bg-amber-500", text: "text-white", hex: "#f59e0b", light: "bg-amber-50 dark:bg-amber-950/30" },
+  jaisalmer: { bg: "bg-amber-500", text: "text-white", hex: "#f59e0b", light: "bg-amber-50 dark:bg-amber-950/30" },
+  UDR: { bg: "bg-cyan-500", text: "text-white", hex: "#06b6d4", light: "bg-cyan-50 dark:bg-cyan-950/30" },
+  udaipur: { bg: "bg-cyan-500", text: "text-white", hex: "#06b6d4", light: "bg-cyan-50 dark:bg-cyan-950/30" },
+  JAI: { bg: "bg-pink-500", text: "text-white", hex: "#ec4899", light: "bg-pink-50 dark:bg-pink-950/30" },
+  jaipur: { bg: "bg-pink-500", text: "text-white", hex: "#ec4899", light: "bg-pink-50 dark:bg-pink-950/30" },
+  VNS: { bg: "bg-purple-500", text: "text-white", hex: "#a855f7", light: "bg-purple-50 dark:bg-purple-950/30" },
+  varanasi: { bg: "bg-purple-500", text: "text-white", hex: "#a855f7", light: "bg-purple-50 dark:bg-purple-950/30" },
+};
+
+// Checklist items
+export interface ChecklistItem {
+  id: string;
+  label: string;
+  category: "document" | "health" | "tech" | "clothing" | "finance";
+}
+
+export const defaultChecklist: ChecklistItem[] = [
+  { id: "passport", label: "여권 (유효기간 6개월 이상)", category: "document" },
+  { id: "visa", label: "인도 e-비자 발급 완료", category: "document" },
+  { id: "insurance", label: "여행자 보험 가입", category: "document" },
+  { id: "flight-print", label: "항공권 e-ticket 출력/저장", category: "document" },
+  { id: "hotel-voucher", label: "숙소 바우처 출력/저장", category: "document" },
+  { id: "medicine", label: "상비약 (지사제, 소화제, 진통제, 밴드)", category: "health" },
+  { id: "sanitizer", label: "손 소독제 & 물티슈", category: "health" },
+  { id: "sunscreen", label: "선크림 & 선글라스", category: "health" },
+  { id: "adapter", label: "인도 전기 어댑터 (C/D 타입)", category: "tech" },
+  { id: "battery", label: "보조 배터리 (비행기 기내 반입)", category: "tech" },
+  { id: "sim", label: "인도 eSIM/SIM카드", category: "tech" },
+  { id: "jacket", label: "얇은 재킷/바람막이 (야간 버스용)", category: "clothing" },
+  { id: "scarf", label: "스카프 (사막/사원용)", category: "clothing" },
+  { id: "cash", label: "현금 환전 (INR)", category: "finance" },
+  { id: "card", label: "해외 결제 카드 준비", category: "finance" },
+];
+
+// Emergency contacts
+export interface EmergencyContact {
+  name: string;
+  nameEn: string;
+  number: string;
+  description: string;
+}
+
+export const emergencyContacts: EmergencyContact[] = [
+  { name: "인도 경찰", nameEn: "Police", number: "100", description: "긴급 신고" },
+  { name: "앰뷸런스", nameEn: "Ambulance", number: "102", description: "의료 응급" },
+  { name: "소방서", nameEn: "Fire", number: "101", description: "화재 신고" },
+  { name: "관광 경찰", nameEn: "Tourist Police", number: "1363", description: "관광객 전용 신고" },
+  { name: "주인도 한국대사관", nameEn: "Korean Embassy", number: "+91-11-4200-7000", description: "9 Chandragupta Marg, New Delhi" },
+  { name: "영사콜센터 (24시간)", nameEn: "Consular Call Center", number: "+82-2-3210-0404", description: "한국 외교부 24시간 긴급전화" },
+];
+
 // 새로운 일정 데이터 구조
 export interface DaySchedule {
   day: number;
@@ -119,11 +228,13 @@ export interface DaySchedule {
   title: string;
   city: string;
   cityEn: string;
+  cityId: string;
   color: string;
   transport?: {
     type: "flight" | "car";
     description: string;
     time?: string;
+    bookingRef?: string;
   };
   activities: {
     time?: string;
@@ -157,6 +268,7 @@ export const itinerary: DaySchedule[] = [
     title: "인천 → 델리 도착",
     city: "델리",
     cityEn: "Delhi",
+    cityId: "delhi",
     color: "#f97316",
     transport: {
       type: "flight",
@@ -191,6 +303,7 @@ export const itinerary: DaySchedule[] = [
     title: "델리 → 자이살메르",
     city: "자이살메르",
     cityEn: "Jaisalmer",
+    cityId: "jaisalmer",
     color: "#f59e0b",
     transport: {
       type: "flight",
@@ -226,11 +339,13 @@ export const itinerary: DaySchedule[] = [
     title: "자이살메르 → 우다이푸르",
     city: "자이살메르",
     cityEn: "Jaisalmer",
+    cityId: "jaisalmer",
     color: "#f59e0b",
     transport: {
       type: "car",
       description: "자이살메르 → 우다이푸르 (야간 버스, BS Maharaja Travels)",
       time: "20:45 출발 → 익일 06:45 도착",
+      bookingRef: "3BQPHSXP",
     },
     activities: [
       { title: "자이살메르 관광", description: "골든포트, 하벨리 등" },
@@ -247,6 +362,7 @@ export const itinerary: DaySchedule[] = [
     title: "우다이푸르",
     city: "우다이푸르",
     cityEn: "Udaipur",
+    cityId: "udaipur",
     color: "#06b6d4",
     activities: [
       { time: "06:45", title: "우다이푸르 도착 (Fatehpura Circle)", description: "야간 버스 하차" },
@@ -262,11 +378,13 @@ export const itinerary: DaySchedule[] = [
     title: "우다이푸르 → 자이푸르",
     city: "우다이푸르",
     cityEn: "Udaipur",
+    cityId: "udaipur",
     color: "#06b6d4",
     transport: {
       type: "car",
       description: "우다이푸르 → 자이푸르 (야간 버스, Patel Travels)",
       time: "2/18 01:00 출발 → 08:45 도착",
+      bookingRef: "3BFFM366",
     },
     activities: [
       { title: "우다이푸르 관광" },
@@ -283,6 +401,7 @@ export const itinerary: DaySchedule[] = [
     title: "자이푸르",
     city: "자이푸르",
     cityEn: "Jaipur",
+    cityId: "jaipur",
     color: "#ec4899",
     activities: [
       { time: "08:45", title: "자이푸르 도착 (ITC Rajputana Sheraton 근처)", description: "야간 버스 하차" },
@@ -312,6 +431,7 @@ export const itinerary: DaySchedule[] = [
     title: "자이푸르 → 뉴델리",
     city: "자이푸르 → 델리",
     cityEn: "Jaipur → Delhi",
+    cityId: "jaipur",
     color: "#ec4899",
     transport: {
       type: "flight",
@@ -346,6 +466,7 @@ export const itinerary: DaySchedule[] = [
     title: "뉴델리 → 바라나시",
     city: "바라나시",
     cityEn: "Varanasi",
+    cityId: "varanasi",
     color: "#a855f7",
     transport: {
       type: "flight",
@@ -381,6 +502,7 @@ export const itinerary: DaySchedule[] = [
     title: "바라나시 → 델리",
     city: "바라나시 → 델리",
     cityEn: "Varanasi → Delhi",
+    cityId: "varanasi",
     color: "#a855f7",
     transport: {
       type: "flight",
@@ -404,6 +526,7 @@ export const itinerary: DaySchedule[] = [
     title: "귀국",
     city: "델리 → 서울",
     cityEn: "Delhi → Seoul",
+    cityId: "delhi",
     color: "#f97316",
     transport: {
       type: "flight",
@@ -437,6 +560,7 @@ export interface Expense {
   amount: number;
   currency: "KRW" | "INR";
   category: "flight" | "accommodation" | "food" | "transport" | "activity" | "shopping" | "other";
+  isPreBooked?: boolean;
 }
 
 export const defaultExpenses: Expense[] = [
@@ -447,6 +571,7 @@ export const defaultExpenses: Expense[] = [
     amount: 238556,
     currency: "KRW",
     category: "accommodation",
+    isPreBooked: true,
   },
   {
     id: "hotel-jaisalmer-day2",
@@ -455,6 +580,7 @@ export const defaultExpenses: Expense[] = [
     amount: 137796,
     currency: "KRW",
     category: "accommodation",
+    isPreBooked: true,
   },
   {
     id: "flight-del-jsa-0214",
@@ -463,6 +589,7 @@ export const defaultExpenses: Expense[] = [
     amount: 12571,
     currency: "INR",
     category: "flight",
+    isPreBooked: true,
   },
   {
     id: "flight-jai-del-0219",
@@ -471,6 +598,7 @@ export const defaultExpenses: Expense[] = [
     amount: 6631,
     currency: "INR",
     category: "flight",
+    isPreBooked: true,
   },
   {
     id: "flight-hdo-vns-0220",
@@ -479,6 +607,7 @@ export const defaultExpenses: Expense[] = [
     amount: 13719,
     currency: "INR",
     category: "flight",
+    isPreBooked: true,
   },
   {
     id: "flight-vns-del-0221",
@@ -487,6 +616,7 @@ export const defaultExpenses: Expense[] = [
     amount: 11932,
     currency: "INR",
     category: "flight",
+    isPreBooked: true,
   },
   {
     id: "hotel-delhi-day7",
@@ -495,6 +625,7 @@ export const defaultExpenses: Expense[] = [
     amount: 53084,
     currency: "KRW",
     category: "accommodation",
+    isPreBooked: true,
   },
   {
     id: "hotel-jaipur-day6",
@@ -503,6 +634,7 @@ export const defaultExpenses: Expense[] = [
     amount: 139242,
     currency: "KRW",
     category: "accommodation",
+    isPreBooked: true,
   },
   {
     id: "airbnb-varanasi-day8",
@@ -511,6 +643,7 @@ export const defaultExpenses: Expense[] = [
     amount: 88632,
     currency: "KRW",
     category: "accommodation",
+    isPreBooked: true,
   },
 ];
 
@@ -524,3 +657,32 @@ export const budget = {
   flight: 1000000,
   travel: 1800000,
 };
+
+// Helper: get trip phase
+export function getTripPhase(now?: Date): "before" | "during" | "after" {
+  const today = now || new Date();
+  const start = new Date(tripInfo.dates.start);
+  const end = new Date(tripInfo.dates.end);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
+
+  if (today < start) return "before";
+  if (today > end) return "after";
+  return "during";
+}
+
+// Helper: get current day number (1-10)
+export function getCurrentDayNumber(now?: Date): number {
+  const today = now || new Date();
+  const start = new Date(tripInfo.dates.start);
+  start.setHours(0, 0, 0, 0);
+  const diff = today.getTime() - start.getTime();
+  const dayNum = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  return Math.max(1, Math.min(dayNum, 10));
+}
+
+// Helper: get city ID from day
+export function getCityIdFromDay(dayNum: number): string {
+  const day = itinerary.find(d => d.day === dayNum);
+  return day?.cityId || "delhi";
+}
