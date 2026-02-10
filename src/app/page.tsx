@@ -32,7 +32,7 @@ function getTimeUntilTrip() {
 
 function FlightCard({ flight, type }: { flight: typeof flights.departure; type: "출국" | "귀국" }) {
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-300">
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-neutral-400 dark:hover:border-neutral-600 hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300">
       <div className="flex items-center justify-between mb-3 sm:mb-5">
         <span className="text-[10px] sm:text-xs font-medium px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full uppercase tracking-wide bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
           {type}
@@ -51,6 +51,9 @@ function FlightCard({ flight, type }: { flight: typeof flights.departure; type: 
           <div className="w-full h-[1px] bg-neutral-300 dark:bg-neutral-700 relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-neutral-900 dark:bg-white rounded-full" />
             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-neutral-900 dark:bg-white rounded-full" />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Plane size={14} className="text-neutral-400 -rotate-[0deg]" />
+            </div>
           </div>
           <p className="text-[10px] sm:text-xs text-neutral-400 mt-1.5 sm:mt-2 truncate max-w-full">{flight.airline} {flight.flightNumber}</p>
         </div>
@@ -80,6 +83,14 @@ const quickLinks = [
   { href: "/resources", label: "자료실", desc: "필수 정보", icon: FolderOpen },
 ];
 
+const cityColors: Record<string, { bg: string; text: string; hex: string }> = {
+  DEL: { bg: "bg-orange-500", text: "text-white", hex: "#f97316" },
+  JSA: { bg: "bg-amber-500", text: "text-white", hex: "#f59e0b" },
+  UDR: { bg: "bg-cyan-500", text: "text-white", hex: "#06b6d4" },
+  JAI: { bg: "bg-pink-500", text: "text-white", hex: "#ec4899" },
+  VNS: { bg: "bg-purple-500", text: "text-white", hex: "#a855f7" },
+};
+
 const cityRoute = [
   { name: "델리", en: "DEL", highlight: true },
   { name: "자이살메르", en: "JSA" },
@@ -107,7 +118,7 @@ export default function Home() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-16">
       {/* Hero Section with D-Day Countdown */}
       <section className="mb-10 sm:mb-24">
-        <div className="text-center mb-8 sm:mb-14">
+        <div className="text-center mb-8 sm:mb-14 hero-gradient rounded-3xl py-8 sm:py-14 px-4">
           <p className="text-[10px] sm:text-sm text-neutral-400 tracking-widest uppercase mb-3 sm:mb-6">
             2월 13일 (금) ~ 22일 (일)
           </p>
@@ -118,16 +129,18 @@ export default function Home() {
           {mounted && (
             <div className="mt-4 sm:mt-8">
               <p className="text-[10px] sm:text-xs text-neutral-400 mb-1 sm:mb-2 uppercase tracking-widest">여행까지</p>
-              <p className="text-5xl sm:text-8xl font-bold tracking-tighter text-neutral-900 dark:text-white">
-                D-{timeUntil.days}
-              </p>
+              <div className="inline-flex items-center bg-neutral-50 dark:bg-neutral-800/60 rounded-2xl px-6 sm:px-10 py-3 sm:py-5">
+                <p className="text-5xl sm:text-8xl font-bold tracking-tighter text-neutral-900 dark:text-white">
+                  D-{timeUntil.days}
+                </p>
+              </div>
               <div className="flex items-center justify-center gap-3 sm:gap-5 mt-3 sm:mt-4">
                 {[
                   { value: timeUntil.hours, label: "시간" },
                   { value: timeUntil.minutes, label: "분" },
                   { value: timeUntil.seconds, label: "초" },
                 ].map((item) => (
-                  <div key={item.label} className="flex flex-col items-center">
+                  <div key={item.label} className="flex flex-col items-center bg-neutral-50 dark:bg-neutral-800/50 rounded-xl px-3 sm:px-5 py-2 sm:py-3 border border-neutral-200/50 dark:border-neutral-700/50">
                     <span className="text-lg sm:text-2xl font-bold tabular-nums">{String(item.value).padStart(2, "0")}</span>
                     <span className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">{item.label}</span>
                   </div>
@@ -143,23 +156,25 @@ export default function Home() {
           <h3 className="text-[10px] sm:text-xs font-medium text-neutral-400 uppercase tracking-wider mb-4 sm:mb-6">여행 루트</h3>
           {/* Visual route with dots */}
           <div className="flex items-center justify-center">
-            {cityRoute.map((city, idx) => (
-              <div key={idx} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-[9px] sm:text-[11px] font-bold ${
-                    city.highlight
-                      ? "bg-neutral-900 dark:bg-white text-white dark:text-neutral-900"
-                      : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400"
-                  }`}>
-                    {city.en}
+            {cityRoute.map((city, idx) => {
+              const color = cityColors[city.en];
+              return (
+                <div key={idx} className="flex items-center">
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-[9px] sm:text-[11px] font-bold ${color.bg} ${color.text}`}
+                      style={{ boxShadow: `0 0 12px ${color.hex}40` }}
+                    >
+                      {city.en}
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-medium mt-1.5 whitespace-nowrap">{city.name}</span>
                   </div>
-                  <span className="text-[10px] sm:text-xs font-medium mt-1.5 whitespace-nowrap">{city.name}</span>
+                  {idx < cityRoute.length - 1 && (
+                    <div className="w-3 sm:w-8 h-[2px] mx-0.5 sm:mx-1 mb-5 sm:mb-6 route-line-animated text-neutral-300 dark:text-neutral-600" />
+                  )}
                 </div>
-                {idx < cityRoute.length - 1 && (
-                  <div className="w-3 sm:w-8 h-[1px] bg-neutral-300 dark:bg-neutral-700 mx-0.5 sm:mx-1 mb-5 sm:mb-6" />
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="grid grid-cols-4 gap-2 sm:gap-4 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-neutral-100 dark:border-neutral-800">
             {[
@@ -186,13 +201,13 @@ export default function Home() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-300 active:scale-[0.97]"
+                className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-300 active:scale-[0.97] hover:-translate-y-[3px] hover:shadow-lg"
               >
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-900 dark:group-hover:bg-white transition-colors duration-300">
+                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-900 dark:group-hover:bg-white group-hover:-translate-y-[2px] transition-all duration-300">
                     <Icon size={18} className="text-neutral-600 dark:text-neutral-400 group-hover:text-white dark:group-hover:text-neutral-900 transition-colors duration-300 sm:[width:20px] sm:[height:20px]" />
                   </div>
-                  <span className="text-neutral-300 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-white group-hover:translate-x-1 transition-all">&rarr;</span>
+                  <span className="text-neutral-300 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-white group-hover:translate-x-1 transition-all duration-300">&rarr;</span>
                 </div>
                 <h3 className="font-semibold text-sm sm:text-base">{item.label}</h3>
                 <p className="text-[10px] sm:text-sm text-neutral-500 mt-0.5">{item.desc}</p>
@@ -223,33 +238,42 @@ export default function Home() {
               (d.accommodation && d.accommodation.includes("숙소 없음"))
             ).length;
             return (
-              <Link href="/hotels" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+              <Link href="/hotels" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97] overflow-hidden relative">
                 <div className="flex items-center gap-2 mb-3">
                   <Hotel size={14} className="text-neutral-400" />
                   <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">숙소</span>
                 </div>
                 <p className="text-2xl sm:text-3xl font-bold">{confirmedNights}<span className="text-sm font-normal text-neutral-400">/{totalNights}</span></p>
                 <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">확정 완료</p>
+                <div className="mt-3 h-[3px] rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                  <div className={`h-full rounded-full transition-all duration-500 ${confirmedNights >= totalNights ? "bg-green-500" : "bg-amber-500"}`} style={{ width: `${totalNights > 0 ? Math.round((confirmedNights / totalNights) * 100) : 0}%` }} />
+                </div>
               </Link>
             );
           })()}
           {/* Flights Status */}
-          <Link href="/resources" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+          <Link href="/resources" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97] overflow-hidden">
             <div className="flex items-center gap-2 mb-3">
               <Plane size={14} className="text-neutral-400" />
               <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">항공권</span>
             </div>
             <p className="text-2xl sm:text-3xl font-bold">6<span className="text-sm font-normal text-neutral-400">/6</span></p>
             <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 완료</p>
+            <div className="mt-3 h-[3px] rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+              <div className="h-full rounded-full bg-green-500 w-full" />
+            </div>
           </Link>
           {/* Bus Status */}
-          <Link href="/resources" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+          <Link href="/resources" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97] overflow-hidden">
             <div className="flex items-center gap-2 mb-3">
               <Bus size={14} className="text-neutral-400" />
               <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">야간버스</span>
             </div>
             <p className="text-2xl sm:text-3xl font-bold">2<span className="text-sm font-normal text-neutral-400">/2</span></p>
             <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 완료</p>
+            <div className="mt-3 h-[3px] rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+              <div className="h-full rounded-full bg-green-500 w-full" />
+            </div>
           </Link>
           {/* Budget Status */}
           {(() => {
@@ -258,13 +282,16 @@ export default function Home() {
               return sum + Math.round(e.amount * exchangeRate.INR_TO_KRW);
             }, 0);
             return (
-              <Link href="/budget" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97]">
+              <Link href="/budget" className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all active:scale-[0.97] overflow-hidden">
                 <div className="flex items-center gap-2 mb-3">
                   <Wallet size={14} className="text-neutral-400" />
                   <span className="text-[10px] sm:text-xs text-neutral-400 uppercase tracking-wider font-medium">확정 경비</span>
                 </div>
                 <p className="text-2xl sm:text-3xl font-bold">{Math.round(totalKRW / 10000)}<span className="text-sm font-normal text-neutral-400">만원</span></p>
                 <p className="text-[10px] sm:text-xs text-neutral-500 mt-1">예약 확정분</p>
+                <div className="mt-3 h-[3px] rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                  <div className="h-full rounded-full bg-amber-500" style={{ width: "75%" }} />
+                </div>
               </Link>
             );
           })()}
@@ -285,13 +312,16 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
           {defaultPlaces.map((place, idx) => {
             const cityDays = itinerary.filter((d) => d.cityEn.includes(place.name) || d.city.includes(place.nameKo));
+            const cityEn = ["DEL", "JSA", "UDR", "JAI", "VNS"][idx];
+            const color = cityColors[cityEn];
             return (
               <div
                 key={place.id}
-                className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 relative overflow-hidden"
+                className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 relative overflow-hidden hover:-translate-y-[2px] hover:shadow-lg transition-all duration-300"
               >
+                <div className="h-[3px] absolute top-0 left-0 right-0" style={{ backgroundColor: color.hex }} />
                 <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${color.bg} ${color.text}`}>
                     {idx + 1}
                   </span>
                   <span className="text-[10px] sm:text-xs text-neutral-400">{cityDays.length > 0 ? `${cityDays.length}일` : ""}</span>
@@ -346,7 +376,7 @@ export default function Home() {
             <Link
               key={day.day}
               href={`/schedule#day-${day.day}`}
-              className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-3 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-300 active:scale-[0.97]"
+              className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-3 sm:p-5 hover:border-neutral-400 dark:hover:border-neutral-600 hover:-translate-y-[2px] hover:shadow-md transition-all duration-300 active:scale-[0.97]"
             >
               <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
                 <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-900 font-bold text-xs sm:text-sm shrink-0">
@@ -363,9 +393,9 @@ export default function Home() {
               {day.transport && (
                 <div className="flex items-center gap-1.5 mt-2">
                   {day.transport.type === "flight" ? (
-                    <Plane size={11} className="text-neutral-400 shrink-0" />
+                    <Plane size={14} className="text-neutral-400 shrink-0" />
                   ) : (
-                    <Bus size={11} className="text-neutral-400 shrink-0" />
+                    <Bus size={14} className="text-neutral-400 shrink-0" />
                   )}
                   <span className="text-[10px] text-neutral-400 truncate">
                     {day.transport.type === "flight" ? "항공" : "야간버스"}
@@ -380,7 +410,7 @@ export default function Home() {
           <div className="text-center mt-6">
             <Link
               href="/schedule"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full text-sm font-medium transition-colors"
+              className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium"
             >
               나머지 {itinerary.length - 6}일 보기 &rarr;
             </Link>

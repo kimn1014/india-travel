@@ -293,3 +293,38 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(0.98);
   }
 }
+
+/* Route dash animation */
+@keyframes dashMove {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.route-line-animated {
+  background: repeating-linear-gradient(
+    90deg,
+    currentColor 0px,
+    currentColor 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  background-size: 200% 100%;
+  animation: dashBgMove 1.5s linear infinite;
+}
+
+@keyframes dashBgMove {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -16px 0%; }
+}
+
+/* Hero gradient */
+.hero-gradient {
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(251, 146, 60, 0.08) 0%, transparent 70%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero-gradient {
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+  }
+}
