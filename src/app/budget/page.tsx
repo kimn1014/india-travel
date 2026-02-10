@@ -179,32 +179,34 @@ export default function BudgetPage() {
     }
   };
 
-  // Totals
-  const totalKrw = expenses.reduce((sum, e) => {
+  // Totals (1인 기준 — 항공권 제외 모든 경비 2인 분할)
+  const totalKrwFull = expenses.reduce((sum, e) => {
     if (e.currency === "KRW") return sum + e.amount;
     return sum + e.amount * exchangeRate.INR_TO_KRW;
   }, 0);
+  const totalKrw = totalKrwFull / 2;
 
-  const totalInr = expenses.reduce((sum, e) => {
+  const totalInrFull = expenses.reduce((sum, e) => {
     if (e.currency === "INR") return sum + e.amount;
     return sum + e.amount * exchangeRate.KRW_TO_INR;
   }, 0);
+  const totalInr = totalInrFull / 2;
 
   const preBookedTotalKrw = expenses
     .filter((e) => e.isPreBooked)
     .reduce((sum, e) => {
       if (e.currency === "KRW") return sum + e.amount;
       return sum + e.amount * exchangeRate.INR_TO_KRW;
-    }, 0);
+    }, 0) / 2;
 
   const additionalTotalKrw = expenses
     .filter((e) => !e.isPreBooked)
     .reduce((sum, e) => {
       if (e.currency === "KRW") return sum + e.amount;
       return sum + e.amount * exchangeRate.INR_TO_KRW;
-    }, 0);
+    }, 0) / 2;
 
-  // Category breakdown
+  // Category breakdown (1인 기준)
   const expensesByCategory = Object.entries(categoryConfig).map(
     ([id, cfg]) => ({
       id,
@@ -214,7 +216,7 @@ export default function BudgetPage() {
         .reduce((sum, e) => {
           if (e.currency === "KRW") return sum + e.amount;
           return sum + e.amount * exchangeRate.INR_TO_KRW;
-        }, 0),
+        }, 0) / 2,
     })
   );
 
@@ -300,6 +302,14 @@ export default function BudgetPage() {
           <p className="text-neutral-500 text-sm sm:text-base hidden sm:block">
             여행 경비를 관리하고 환율을 계산하세요
           </p>
+          <div className="flex items-center gap-1.5 mt-1">
+            <span className="text-[10px] sm:text-xs px-2 py-0.5 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full font-medium">
+              2인 분할
+            </span>
+            <span className="text-[10px] sm:text-xs text-neutral-400">
+              항공권 제외 · 1인 기준 표시
+            </span>
+          </div>
         </div>
         <button
           onClick={openAddModal}
@@ -394,7 +404,7 @@ export default function BudgetPage() {
         <div className="bg-neutral-900 dark:bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white dark:text-neutral-900 relative overflow-hidden">
           <div className="relative">
             <h2 className="text-xs sm:text-sm font-medium mb-3 sm:mb-4 opacity-60 uppercase tracking-wide">
-              총 지출
+              내 지출 (1인)
             </h2>
             <p className="text-3xl sm:text-4xl font-bold tracking-tight number-display">
               ₩{totalKrw.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -405,7 +415,7 @@ export default function BudgetPage() {
 
             <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white/10 dark:border-black/10">
               <p className="text-xs sm:text-sm opacity-50 mb-2 sm:mb-3">
-                지출 {expenses.length}건
+                지출 {expenses.length}건 · 1인 기준
               </p>
               <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {expensesByCategory
@@ -485,6 +495,24 @@ export default function BudgetPage() {
               Math.abs(budget.travel - totalKrw) * exchangeRate.KRW_TO_INR
             ).toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </p>
+        </div>
+      </div>
+
+      {/* 내 총 부담 요약 */}
+      <div className="bg-neutral-50 dark:bg-neutral-950/50 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 mb-6 sm:mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wide mb-1">
+              내 총 부담
+            </p>
+            <p className="text-xl sm:text-2xl font-bold number-display">
+              ₩{(budget.flight + totalKrw).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            </p>
+          </div>
+          <div className="text-right text-xs sm:text-sm text-neutral-400 space-y-0.5">
+            <p>항공권 ₩{budget.flight.toLocaleString()}</p>
+            <p>경비(1/2) ₩{totalKrw.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+          </div>
         </div>
       </div>
 
@@ -854,13 +882,11 @@ function ExpenseRow({
       <div className="text-right shrink-0">
         <p className="font-semibold text-sm sm:text-base number-display">
           {expense.currency === "KRW" ? "₩" : "₹"}
-          {expense.amount.toLocaleString()}
+          {(expense.amount / 2).toLocaleString(undefined, { maximumFractionDigits: 0 })}
         </p>
         <p className="text-[10px] sm:text-xs text-neutral-400">
-          ≈{" "}
-          {expense.currency === "KRW"
-            ? `₹${(expense.amount * exchangeRate.KRW_TO_INR).toFixed(0)}`
-            : `₩${(expense.amount * exchangeRate.INR_TO_KRW).toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
+          총 {expense.currency === "KRW" ? "₩" : "₹"}
+          {expense.amount.toLocaleString()}
         </p>
       </div>
 
