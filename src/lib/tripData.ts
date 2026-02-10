@@ -673,6 +673,24 @@ export const defaultExpenses: Expense[] = [
     category: "accommodation",
     isPreBooked: true,
   },
+  {
+    id: "bus-jsa-udr-0215",
+    date: "2026-02-15",
+    description: "야간버스 자이살메르→우다이푸르 (BS Maharaja Travels) · 2인 · Booking: 3BQPHSXP",
+    amount: 54002,
+    currency: "KRW",
+    category: "transport",
+    isPreBooked: true,
+  },
+  {
+    id: "bus-udr-jai-0217",
+    date: "2026-02-17",
+    description: "야간버스 우다이푸르→자이푸르 (Patel Travels) · 2인 · Booking: 3BFFM366",
+    amount: 65833,
+    currency: "KRW",
+    category: "transport",
+    isPreBooked: true,
+  },
 ];
 
 export const exchangeRate = {
