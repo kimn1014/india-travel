@@ -183,11 +183,11 @@ export default function Home() {
     (checkedCount / defaultChecklist.length) * 100
   );
 
-  // Budget calculation for quick link preview
+  // Budget calculation for quick link preview (1인 기준)
   const totalKRW = defaultExpenses.reduce((sum, e) => {
     if (e.currency === "KRW") return sum + e.amount;
     return sum + Math.round(e.amount * exchangeRate.INR_TO_KRW);
-  }, 0);
+  }, 0) / 2;
 
   // Voucher count for quick link preview
   const voucherCount = itinerary.filter(
@@ -222,7 +222,7 @@ export default function Home() {
     {
       href: "/resources",
       label: "자료실",
-      desc: `바우처 ${voucherCount}건`,
+      desc: `바우처 · 영수증 관리`,
       icon: FolderOpen,
     },
   ];
@@ -351,7 +351,7 @@ export default function Home() {
               여행 루트
             </h3>
             {/* Visual route with transport icons */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-hide">
               {cityRoute.map((city, idx) => {
                 const color = cityColors[city.en];
                 return (
@@ -368,7 +368,7 @@ export default function Home() {
                       </span>
                     </div>
                     {idx < cityRoute.length - 1 && (
-                      <div className="flex flex-col items-center mx-0.5 sm:mx-1 mb-5 sm:mb-6">
+                      <div className="flex flex-col items-center mx-1 sm:mx-2 mb-5 sm:mb-6">
                         {cityRoute[idx + 1].transport === "flight" ? (
                           <Plane
                             size={12}
@@ -380,7 +380,7 @@ export default function Home() {
                             className="text-neutral-400 sm:[width:14px] sm:[height:14px]"
                           />
                         )}
-                        <div className="w-3 sm:w-8 h-[2px] mt-0.5 route-line-animated text-neutral-300 dark:text-neutral-600" />
+                        <div className="w-5 sm:w-8 h-[2px] mt-0.5 route-line-animated text-neutral-300 dark:text-neutral-600" />
                       </div>
                     )}
                   </div>
@@ -477,44 +477,66 @@ export default function Home() {
               <div className={`accordion-grid ${checklistOpen ? "open" : ""}`}>
                 <div>
                   <div className="px-4 sm:px-6 pb-4 sm:pb-6 border-t border-neutral-100 dark:border-neutral-800">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1.5 mt-3 sm:mt-4">
-                      {defaultChecklist.map((item, idx) => {
-                        const isChecked = !!checkedItems[item.id];
+                    {(() => {
+                      const categoryLabels: Record<string, string> = {
+                        document: "서류/예약",
+                        health: "건강/위생",
+                        tech: "전자기기",
+                        clothing: "의류",
+                        finance: "금융",
+                      };
+                      let globalIdx = 0;
+                      return Object.entries(categoryLabels).map(([cat, label]) => {
+                        const items = defaultChecklist.filter((item) => item.category === cat);
+                        if (items.length === 0) return null;
                         return (
-                          <button
-                            key={item.id}
-                            onClick={() => toggleCheck(item.id)}
-                            className={`flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-left transition-all duration-300 active:scale-[0.97] ${
-                              isChecked
-                                ? "bg-green-50 dark:bg-green-950/20"
-                                : "hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
-                            }`}
-                            style={{ transitionDelay: `${idx * 30}ms` }}
-                          >
-                            <div
-                              className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border transition-all duration-300 ${
-                                isChecked
-                                  ? "bg-green-500 border-green-500"
-                                  : "border-neutral-300 dark:border-neutral-600"
-                              }`}
-                            >
-                              {isChecked && (
-                                <Check size={12} className="text-white" />
-                              )}
+                          <div key={cat} className="mt-3 sm:mt-4">
+                            <p className="text-[10px] sm:text-xs text-neutral-400 font-medium uppercase tracking-wider mb-1 px-3 sm:px-4">
+                              {label}
+                            </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-0.5 sm:gap-1">
+                              {items.map((item) => {
+                                const isChecked = !!checkedItems[item.id];
+                                const idx = globalIdx++;
+                                return (
+                                  <button
+                                    key={item.id}
+                                    onClick={() => toggleCheck(item.id)}
+                                    className={`flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-left transition-all duration-300 active:scale-[0.97] ${
+                                      isChecked
+                                        ? "bg-green-50 dark:bg-green-950/20"
+                                        : "hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
+                                    }`}
+                                    style={{ transitionDelay: `${idx * 30}ms` }}
+                                  >
+                                    <div
+                                      className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 border transition-all duration-300 ${
+                                        isChecked
+                                          ? "bg-green-500 border-green-500"
+                                          : "border-neutral-300 dark:border-neutral-600"
+                                      }`}
+                                    >
+                                      {isChecked && (
+                                        <Check size={12} className="text-white" />
+                                      )}
+                                    </div>
+                                    <span
+                                      className={`text-xs sm:text-sm transition-all duration-300 ${
+                                        isChecked
+                                          ? "text-neutral-400 line-through"
+                                          : "text-neutral-700 dark:text-neutral-300"
+                                      }`}
+                                    >
+                                      {item.label}
+                                    </span>
+                                  </button>
+                                );
+                              })}
                             </div>
-                            <span
-                              className={`text-xs sm:text-sm transition-all duration-300 ${
-                                isChecked
-                                  ? "text-neutral-400 line-through"
-                                  : "text-neutral-700 dark:text-neutral-300"
-                              }`}
-                            >
-                              {item.label}
-                            </span>
-                          </button>
+                          </div>
                         );
-                      })}
-                    </div>
+                      });
+                    })()}
                   </div>
                 </div>
               </div>
@@ -563,10 +585,10 @@ export default function Home() {
       <ScrollReveal>
         <section id="preparation" className="mb-8 sm:mb-20">
           <div className="flex items-center gap-3 mb-4 sm:mb-8">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-600 flex items-center justify-center shrink-0">
               <CheckCircle2
                 size={18}
-                className="text-white dark:text-neutral-900 sm:[width:20px] sm:[height:20px]"
+                className="text-white sm:[width:20px] sm:[height:20px]"
               />
             </div>
             <div>
@@ -716,10 +738,10 @@ export default function Home() {
       <ScrollReveal>
         <section id="cities" className="mb-8 sm:mb-20">
           <div className="flex items-center gap-3 mb-4 sm:mb-8">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-orange-500 flex items-center justify-center shrink-0">
               <MapPin
                 size={18}
-                className="text-white dark:text-neutral-900 sm:[width:20px] sm:[height:20px]"
+                className="text-white sm:[width:20px] sm:[height:20px]"
               />
             </div>
             <div>
@@ -743,7 +765,7 @@ export default function Home() {
               return (
                 <div
                   key={place.id}
-                  className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 relative overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-300 active:scale-[0.97] reveal revealed stagger-${idx + 1}`}
+                  className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl sm:rounded-2xl p-4 sm:p-5 relative overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-300 active:scale-[0.97] reveal revealed stagger-${idx + 1} ${idx === defaultPlaces.length - 1 && defaultPlaces.length % 2 !== 0 ? "city-card-last" : ""}`}
                 >
                   <div
                     className="h-[3px] absolute top-0 left-0 right-0"
@@ -792,10 +814,10 @@ export default function Home() {
       <ScrollReveal>
         <section id="flights" className="mb-8 sm:mb-20">
           <div className="flex items-center gap-3 mb-4 sm:mb-8">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-neutral-900 dark:bg-white flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
               <Plane
                 size={18}
-                className="text-white dark:text-neutral-900 sm:[width:20px] sm:[height:20px]"
+                className="text-white sm:[width:20px] sm:[height:20px]"
               />
             </div>
             <div>

@@ -405,6 +405,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hide scrollbar utility */
+.city-card-last {
+  grid-column: 1 / -1;
+}
+@media (min-width: 640px) {
+  .city-card-last {
+    grid-column: auto;
+  }
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
