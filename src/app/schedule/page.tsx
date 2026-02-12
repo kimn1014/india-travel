@@ -11,6 +11,8 @@ export default function SchedulePage() {
   const [notes, setNotes] = useState<Record<number, string>>({});
   const [visibleNotes, setVisibleNotes] = useState<Set<number>>(new Set());
   const [allExpanded, setAllExpanded] = useState(false);
+  const [tripPhase, setTripPhase] = useState<"before" | "during" | "after">("before");
+  const [currentDayNum, setCurrentDayNum] = useState(0);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -36,6 +38,8 @@ export default function SchedulePage() {
   // Load notes from localStorage
   useEffect(() => {
     setMounted(true);
+    setTripPhase(getTripPhase());
+    setCurrentDayNum(getCurrentDayNumber());
     const loaded: Record<number, string> = {};
     for (let i = 1; i <= 10; i++) {
       const n = localStorage.getItem(`india-note-day-${i}`);
@@ -213,22 +217,36 @@ export default function SchedulePage() {
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
                 {/* Day Marker */}
-                <div
-                  className={`absolute left-0 w-11 h-11 sm:w-13 sm:h-13 rounded-full flex items-center justify-center font-bold text-sm z-10 transition-transform duration-300 text-white ${
-                    isExpanded ? "scale-110" : ""
-                  }`}
-                  style={{ backgroundColor: day.color }}
-                >
-                  D{day.day}
+                <div className="relative">
+                  <div
+                    className={`absolute left-0 w-11 h-11 sm:w-13 sm:h-13 rounded-full flex items-center justify-center font-bold text-sm z-10 transition-transform duration-300 text-white ${
+                      isExpanded ? "scale-110" : ""
+                    }`}
+                    style={{
+                      backgroundColor: day.color,
+                      boxShadow: tripPhase === "during" && day.day === currentDayNum
+                        ? `0 0 20px ${day.color}60, 0 0 40px ${day.color}30`
+                        : undefined,
+                    }}
+                  >
+                    D{day.day}
+                  </div>
+                  {tripPhase === "during" && day.day === currentDayNum && (
+                    <span className="absolute left-14 sm:left-16 top-0 z-20 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500 text-white animate-pulse-soft">
+                      오늘
+                    </span>
+                  )}
                 </div>
 
                 {/* Content Card */}
                 <div className="ml-16 sm:ml-20">
                   <div
                     className={`bg-white dark:bg-neutral-900 border rounded-2xl overflow-hidden transition-all duration-300 ${
-                      isExpanded
-                        ? "border-neutral-400 dark:border-neutral-600"
-                        : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700"
+                      tripPhase === "during" && day.day === currentDayNum
+                        ? "ring-2 ring-green-500/30 border-green-500/50 dark:border-green-500/50"
+                        : isExpanded
+                          ? "border-neutral-400 dark:border-neutral-600"
+                          : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700"
                     }`}
                     style={{ borderLeftWidth: "4px", borderLeftColor: day.color }}
                   >

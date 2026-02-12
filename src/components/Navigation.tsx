@@ -118,6 +118,11 @@ export default function Navigation() {
                 D-{dday}
               </span>
             )}
+            {dday !== null && dday <= 0 && dday >= -9 && (
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-green-500 text-white">
+                Day {Math.abs(dday) + 1}
+              </span>
+            )}
           </Link>
           <span className="text-xs font-medium text-neutral-400">{currentPageLabel}</span>
         </div>

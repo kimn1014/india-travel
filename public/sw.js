@@ -1,5 +1,5 @@
 // Service Worker for India Travel 2026 PWA
-const CACHE_VERSION = 'india-travel-v7';
+const CACHE_VERSION = 'india-travel-v8';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 
@@ -40,6 +40,13 @@ self.addEventListener('install', (event) => {
   );
   // Activate immediately without waiting for old SW to finish
   self.skipWaiting();
+});
+
+// Message handler for update notification
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Activate: clean up old caches

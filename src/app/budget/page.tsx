@@ -835,6 +835,15 @@ export default function BudgetPage() {
           </label>
         </div>
       </Modal>
+
+      {/* Mobile Quick Add FAB */}
+      <button
+        onClick={openAddModal}
+        className="md:hidden fixed bottom-20 right-16 z-30 w-14 h-14 rounded-full btn-primary shadow-lg flex items-center justify-center active:scale-95 transition-all"
+        aria-label="빠른 지출 추가"
+      >
+        <Plus size={24} />
+      </button>
     </div>
   );
 }

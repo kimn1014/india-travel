@@ -119,6 +119,7 @@ export interface CityInfo {
   color: string;
   highlights: string[];
   localTips: string[];
+  emoji: string;
 }
 
 export const cityInfoMap: Record<string, CityInfo> = {
@@ -129,6 +130,7 @@ export const cityInfoMap: Record<string, CityInfo> = {
     color: "#f97316",
     highlights: ["레드포트", "쿠트브 미나르", "인디아 게이트", "찬드니 촉"],
     localTips: ["지하철이 가장 편리", "릭샤 타기 전 가격 흥정 필수", "생수만 마시기"],
+    emoji: "🕌",
   },
   jaisalmer: {
     id: "jaisalmer",
@@ -137,6 +139,7 @@ export const cityInfoMap: Record<string, CityInfo> = {
     color: "#f59e0b",
     highlights: ["자이살메르 포트", "파트원 키 하벨리", "샘 사구", "가디사르 호수"],
     localTips: ["사막 투어 흥정 필수", "밤에 매우 추움 - 방한복 필수", "포트 안 게스트하우스 분위기 좋음"],
+    emoji: "🏜️",
   },
   udaipur: {
     id: "udaipur",
@@ -145,6 +148,7 @@ export const cityInfoMap: Record<string, CityInfo> = {
     color: "#06b6d4",
     highlights: ["시티 팰리스", "피촐라 호수", "자그만디르", "몬순 팰리스"],
     localTips: ["호수 근처 루프탑 레스토랑 추천", "보트 투어 필수", "일몰 감상 명소 많음"],
+    emoji: "🏛️",
   },
   jaipur: {
     id: "jaipur",
@@ -153,6 +157,7 @@ export const cityInfoMap: Record<string, CityInfo> = {
     color: "#ec4899",
     highlights: ["하와 마할", "앰버 포트", "잔타르 만타르", "시티 팰리스"],
     localTips: ["앰버 포트 아침 일찍 방문 추천", "쇼핑 명소 - 조하리 바자르", "핑크시티 걸어서 둘러보기 좋음"],
+    emoji: "🩷",
   },
   varanasi: {
     id: "varanasi",
@@ -161,6 +166,7 @@ export const cityInfoMap: Record<string, CityInfo> = {
     color: "#a855f7",
     highlights: ["갠지스 강 가트", "카시 비슈와나트 사원", "아르띠 의식", "사르나트"],
     localTips: ["새벽 보트 투어 필수", "골목이 매우 좁음 - 미니멀 짐 추천", "갠지스 강물 만지지 않기"],
+    emoji: "🙏",
   },
 };
 

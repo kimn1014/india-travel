@@ -170,10 +170,21 @@ export default function WeatherPage() {
     }
   }, []);
 
-  // Fetch all cities overview on mount
+  // Fetch all cities overview on mount (with localStorage cache)
   useEffect(() => {
+    // Load cached data first for instant display
+    const cached = localStorage.getItem("india-weather-cache");
+    if (cached) {
+      try {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < 60 * 60 * 1000) {
+          setAllCityWeather(data);
+          setAllCityLoading(false);
+        }
+      } catch { /* ignore */ }
+    }
+
     const fetchAllCities = async () => {
-      setAllCityLoading(true);
       try {
         const results = await Promise.allSettled(
           cities.map(async (city) => {
@@ -200,6 +211,11 @@ export default function WeatherPage() {
           }
         });
         setAllCityWeather(weatherMap);
+        // Save to localStorage
+        localStorage.setItem("india-weather-cache", JSON.stringify({
+          data: weatherMap,
+          timestamp: Date.now(),
+        }));
       } finally {
         setAllCityLoading(false);
       }

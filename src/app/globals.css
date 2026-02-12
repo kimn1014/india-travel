@@ -1,13 +1,14 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --muted: #737373;
-  --border: #e5e5e5;
-  --card: #ffffff;
-  --accent: #0a0a0a;
-  --accent-hover: #262626;
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --muted: #a3a3a3;
+  --border: #262626;
+  --card: #141414;
+  --accent: #fafafa;
+  --accent-hover: #d4d4d4;
 
   /* City Colors */
   --city-delhi: #f97316;
@@ -54,17 +55,6 @@ body {
   letter-spacing: -0.01em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
-    --muted: #a3a3a3;
-    --border: #262626;
-    --card: #141414;
-    --accent: #fafafa;
-    --accent-hover: #d4d4d4;
-  }
-}
 
 /* ===== Keyframes ===== */
 
@@ -172,16 +162,9 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, rgba(0,0,0,0.04) 50%, transparent 75%);
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.04) 50%, transparent 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-}
-
-@media (prefers-color-scheme: dark) {
-  .animate-shimmer {
-    background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.04) 50%, transparent 75%);
-    background-size: 200% 100%;
-  }
 }
 
 .animate-slide-up {
@@ -281,26 +264,19 @@ textarea {
 
 .card-hover:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.15),
-              0 0 0 1px rgba(0, 0, 0, 0.03);
-}
-
-@media (prefers-color-scheme: dark) {
-  .card-hover:hover {
-    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Button styles - Black/White */
 .btn-primary {
-  background: #0a0a0a;
-  color: #ffffff;
+  background: #fafafa;
+  color: #0a0a0a;
   transition: all var(--duration-normal) var(--ease-out-expo);
 }
 
 .btn-primary:hover {
-  background: #262626;
+  background: #d4d4d4;
   transform: translateY(-1px);
 }
 
@@ -308,28 +284,11 @@ textarea {
   transform: translateY(0);
 }
 
-@media (prefers-color-scheme: dark) {
-  .btn-primary {
-    background: #fafafa;
-    color: #0a0a0a;
-  }
-
-  .btn-primary:hover {
-    background: #d4d4d4;
-  }
-}
-
 /* Glass morphism for modals */
 .glass {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(20, 20, 20, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-}
-
-@media (prefers-color-scheme: dark) {
-  .glass {
-    background: rgba(20, 20, 20, 0.95);
-  }
 }
 
 /* Improved text rendering */
@@ -346,34 +305,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Skeleton loader */
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #1a1a1a 25%, #262626 50%, #1a1a1a 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .skeleton {
-    background: linear-gradient(90deg, #1a1a1a 25%, #262626 50%, #1a1a1a 75%);
-    background-size: 200% 100%;
-  }
-}
-
 /* India flag gradient text */
 .india-gradient {
-  background: linear-gradient(135deg, #ff9933 0%, #ff9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%, #138808 100%);
+  background: linear-gradient(135deg, #ffb366 0%, #ffb366 33%, #e0e0e0 33%, #e0e0e0 66%, #2ecc71 66%, #2ecc71 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-@media (prefers-color-scheme: dark) {
-  .india-gradient {
-    background: linear-gradient(135deg, #ffb366 0%, #ffb366 33%, #e0e0e0 33%, #e0e0e0 66%, #2ecc71 66%, #2ecc71 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
 }
 
 /* Scroll snap for horizontal nav */
@@ -549,13 +492,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Hero gradient */
 .hero-gradient {
-  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(251, 146, 60, 0.08) 0%, transparent 70%);
-}
-
-@media (prefers-color-scheme: dark) {
-  .hero-gradient {
-    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
-  }
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
 }
 
 /* Grid-based accordion (smooth height transition) */

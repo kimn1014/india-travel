@@ -284,23 +284,37 @@ export default function Home() {
                   <p className="text-4xl sm:text-7xl font-bold tracking-tighter text-green-700 dark:text-green-300">
                     Day {currentDay}
                   </p>
+                  {todaySchedule && (
+                    <p className="text-sm sm:text-base text-green-600 dark:text-green-400 mt-1 font-medium">
+                      {todaySchedule.city}
+                    </p>
+                  )}
                 </div>
               </div>
               {todaySchedule && (
-                <div className="mt-4 sm:mt-6 max-w-md mx-auto">
-                  <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 text-left">
-                    <p className="text-xs text-neutral-400 mb-1">
-                      {todaySchedule.date} ({todaySchedule.dayOfWeek})
-                    </p>
+                <div className="mt-4 sm:mt-6 max-w-lg mx-auto space-y-3">
+                  {/* 오늘의 일정 카드 */}
+                  <div
+                    className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 text-left"
+                    style={{ borderLeftWidth: "4px", borderLeftColor: todaySchedule.color }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs text-neutral-400">
+                        {todaySchedule.date} ({todaySchedule.dayOfWeek})
+                      </p>
+                      <Link
+                        href={`/schedule#day-${currentDay}`}
+                        className="text-xs text-neutral-500 hover:text-white transition-colors"
+                      >
+                        상세 보기 &rarr;
+                      </Link>
+                    </div>
                     <p className="font-semibold text-sm sm:text-base">
                       {todaySchedule.title}
                     </p>
-                    <p className="text-xs text-neutral-500 mt-1">
-                      {todaySchedule.city}
-                    </p>
                     {todaySchedule.activities.length > 0 && (
                       <div className="mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
-                        {todaySchedule.activities.slice(0, 3).map((act, i) => (
+                        {todaySchedule.activities.map((act, i) => (
                           <p
                             key={i}
                             className="text-[10px] sm:text-xs text-neutral-500 py-0.5"
@@ -316,6 +330,46 @@ export default function Home() {
                       </div>
                     )}
                   </div>
+
+                  {/* 교통편 카드 */}
+                  {todaySchedule.transport && (
+                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 text-left">
+                      <div className="flex items-center gap-2 mb-2">
+                        {todaySchedule.transport.type === "flight" ? (
+                          <Plane size={14} className="text-neutral-400" />
+                        ) : (
+                          <Bus size={14} className="text-neutral-400" />
+                        )}
+                        <span className="text-xs text-neutral-400 uppercase tracking-wide">
+                          {todaySchedule.transport.type === "flight" ? "항공 이동" : "차량 이동"}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium">{todaySchedule.transport.description}</p>
+                      {todaySchedule.transport.time && (
+                        <p className="text-xs text-neutral-500 mt-1 font-mono">{todaySchedule.transport.time}</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 숙소 퀵 카드 */}
+                  {todaySchedule.accommodationDetails && (
+                    <Link
+                      href="/hotels"
+                      className="block bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 text-left hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Hotel size={14} className="text-neutral-400" />
+                        <span className="text-xs text-neutral-400 uppercase tracking-wide">오늘의 숙소</span>
+                      </div>
+                      <p className="text-sm font-medium">{todaySchedule.accommodationDetails.name}</p>
+                      <p className="text-xs text-neutral-500 mt-1">
+                        {todaySchedule.accommodationDetails.roomType} · 체크인 {todaySchedule.accommodationDetails.checkIn}
+                      </p>
+                      {todaySchedule.accommodationDetails.tel && (
+                        <p className="text-xs text-neutral-400 mt-1 font-mono">{todaySchedule.accommodationDetails.tel}</p>
+                      )}
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
@@ -537,6 +591,17 @@ export default function Home() {
                         );
                       });
                     })()}
+                    {checklistProgress === 100 && (
+                      <div className="mt-4 p-4 rounded-xl bg-green-950/30 border border-green-800 text-center">
+                        <p className="text-2xl mb-1">🎉</p>
+                        <p className="text-sm font-semibold text-green-300">
+                          준비 완료!
+                        </p>
+                        <p className="text-xs text-green-400 mt-1">
+                          모든 체크리스트를 완료했습니다. 즐거운 여행 되세요!
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -782,7 +847,7 @@ export default function Home() {
                     </span>
                   </div>
                   <h3 className="font-bold text-sm sm:text-base">
-                    {place.nameKo}
+                    {mounted && cityInfo?.emoji ? `${cityInfo.emoji} ${place.nameKo}` : place.nameKo}
                   </h3>
                   <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">
                     {place.name}

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import EmergencyFAB from "@/components/EmergencyFAB";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,12 +49,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ServiceWorkerRegistration />
         <Navigation />
+        <EmergencyFAB />
         <main className="min-h-screen pt-12 pb-24 md:pt-16 md:pb-0">
           {children}
         </main>
