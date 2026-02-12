@@ -1,5 +1,5 @@
 // Service Worker for India Travel 2026 PWA
-const CACHE_VERSION = 'india-travel-v8';
+const CACHE_VERSION = 'india-travel-v9';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 
@@ -28,6 +28,7 @@ const VOUCHERS = [
   '/vouchers/bus_UDR_JAI_0217.pdf',
   '/vouchers/receipt_1697203885.pdf',
   '/vouchers/receipt_1697209146.pdf',
+  '/vouchers/booking_2391856538.pdf',
 ];
 
 // Install: pre-cache pages and vouchers

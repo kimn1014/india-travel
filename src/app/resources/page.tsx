@@ -97,6 +97,14 @@ const defaultResources: Resource[] = [
     createdAt: new Date().toISOString(),
   },
   {
+    id: "hotel-udaipur-day4-voucher",
+    type: "pdf",
+    title: "우다이푸르 숙소 바우처 - Parallel Hotel (래디슨 인디비주얼스)",
+    description: "2/16~2/17 (1박) Standard Room · 예약번호: 2391856538 (트립비토즈) · ₩103,390",
+    url: "/vouchers/booking_2391856538.pdf",
+    createdAt: new Date().toISOString(),
+  },
+  {
     id: "hotel-jaipur-day6-voucher",
     type: "pdf",
     title: "자이푸르 숙소 바우처 - Umaid Bhawan Heritage Hotel",
