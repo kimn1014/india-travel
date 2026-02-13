@@ -398,7 +398,7 @@ export default function SettlePage() {
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             placeholder="지출 내용"
-            className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+            className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white"
           />
         </div>
 
@@ -412,7 +412,7 @@ export default function SettlePage() {
               value={form.amount}
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
               placeholder="0"
-              className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+              className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white"
             />
           </div>
           <div>
@@ -424,7 +424,7 @@ export default function SettlePage() {
               onChange={(e) =>
                 setForm({ ...form, currency: e.target.value as "KRW" | "INR" })
               }
-              className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+              className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white"
             >
               <option value="INR">INR (루피)</option>
               <option value="KRW">KRW (원)</option>
@@ -494,7 +494,7 @@ export default function SettlePage() {
             type="date"
             value={form.date}
             onChange={(e) => setForm({ ...form, date: e.target.value })}
-            className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+            className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white"
           />
         </div>
 
@@ -510,7 +510,7 @@ export default function SettlePage() {
                 category: e.target.value as SharedExpense["category"],
               })
             }
-            className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-transparent focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+            className="w-full px-3 sm:px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-lg sm:rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white"
           >
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
@@ -524,7 +524,7 @@ export default function SettlePage() {
       {/* Mobile Quick Add FAB */}
       <button
         onClick={openAddModal}
-        className="md:hidden fixed bottom-20 right-16 z-30 w-14 h-14 rounded-full btn-primary shadow-lg flex items-center justify-center active:scale-95 transition-all"
+        className="md:hidden fixed bottom-24 right-5 z-30 w-14 h-14 rounded-full btn-primary shadow-lg flex items-center justify-center active:scale-95 transition-all"
         aria-label="빠른 지출 추가"
       >
         <Plus size={24} />
@@ -605,7 +605,7 @@ function ExpenseRow({
           e.stopPropagation();
           onDelete(expense.id);
         }}
-        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:bg-red-100 dark:hover:bg-red-950/30 hover:text-red-500 flex items-center justify-center transition-all active:scale-95 shrink-0"
+        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 w-10 h-10 sm:w-8 sm:h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:bg-red-100 dark:hover:bg-red-950/30 hover:text-red-500 flex items-center justify-center transition-all active:scale-95 shrink-0"
         title="삭제"
       >
         <Trash2 size={13} />
