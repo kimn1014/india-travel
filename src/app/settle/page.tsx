@@ -273,6 +273,9 @@ export default function SettlePage() {
               <p className="text-lg sm:text-xl font-bold number-display">
                 ₩{settlement.transferAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
               </p>
+              <p className="text-xs sm:text-sm opacity-50 number-display">
+                ≈ ₹{(settlement.transferAmount * exchangeRate.KRW_TO_INR).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </p>
             </div>
           </div>
         ) : (
