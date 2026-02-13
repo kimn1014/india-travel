@@ -319,7 +319,10 @@ export const itinerary: DaySchedule[] = [
     activities: [
       { time: "13:30", title: "델리(DEL T2) 출발", description: "Air India AI-1783 · 좌석 24A/24B" },
       { time: "15:00", title: "자이살메르(JSA) 도착" },
-      { time: "저녁", title: "자이살메르 탐방" },
+      { time: "15:30", title: "호텔 체크인", description: "Rupal Residency · 짐 정리 후 출발" },
+      { time: "16:30", title: "Café The Kaku", description: "자이살메르 카페에서 차이/커피 한잔" },
+      { time: "17:30", title: "Fort View Point 선셋", description: "카페에서 도보 3분 · 일몰 ~18:20" },
+      { time: "18:30", title: "저녁 식사", description: "주변 레스토랑" },
     ],
     accommodation: "Rupal Residency, Jaisalmer",
     accommodationDetails: {
@@ -354,7 +357,8 @@ export const itinerary: DaySchedule[] = [
       bookingRef: "3BQPHSXP",
     },
     activities: [
-      { title: "자이살메르 관광", description: "골든포트, 하벨리 등" },
+      { time: "오전", title: "자이살메르 포트 관광", description: "골든포트 내부 · 궁전, 자이나교 사원, 골목길 (2~3시간)" },
+      { time: "오후", title: "자이살메르 시내 관광", description: "하벨리 등 자유 탐방" },
       { time: "20:30", title: "B S MAHARAJA TRAVELS AIRPORT CIRCLE 집합", description: "승차지 연락처: 9461351919" },
       { time: "20:45", title: "야간 버스 출발 (자이살메르 → 우다이푸르)", description: "A/C Sleeper (2+1) · 좌석 L9/L10 · Booking: 3BQPHSXP" },
     ],

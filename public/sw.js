@@ -1,5 +1,5 @@
 // Service Worker for India Travel 2026 PWA
-const CACHE_VERSION = 'india-travel-v9';
+const CACHE_VERSION = 'india-travel-v11';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 
@@ -9,6 +9,7 @@ const PAGES = [
   '/schedule',
   '/hotels',
   '/budget',
+  '/settle',
   '/weather',
   '/resources',
 ];

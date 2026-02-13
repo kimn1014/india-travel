@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Expense, defaultExpenses, exchangeRate, budget } from "@/lib/tripData";
+import Link from "next/link";
 import {
   Plus,
   X,
@@ -16,6 +17,7 @@ import {
   ArrowUpDown,
   Edit3,
   AlertCircle,
+  ArrowRight,
 } from "lucide-react";
 import Modal from "@/components/Modal";
 
@@ -294,6 +296,20 @@ export default function BudgetPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-16">
+      {/* 정산 페이지 링크 배너 */}
+      <Link
+        href="/settle"
+        className="flex items-center justify-between p-3 sm:p-4 mb-4 sm:mb-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl hover:border-blue-500/40 transition-all group"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-sm sm:text-base font-medium">실시간 경비 정산</span>
+          <span className="text-[10px] sm:text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-full font-medium">
+            NEW
+          </span>
+        </div>
+        <ArrowRight size={16} className="text-neutral-400 group-hover:translate-x-1 transition-transform" />
+      </Link>
+
       <div className="flex items-center justify-between mb-6 sm:mb-10">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">

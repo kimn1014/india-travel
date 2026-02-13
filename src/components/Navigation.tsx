@@ -10,6 +10,7 @@ import {
   Wallet,
   CloudSun,
   FolderOpen,
+  ArrowRightLeft,
 } from "lucide-react";
 import { tripInfo } from "@/lib/tripData";
 
@@ -18,6 +19,7 @@ const navItems = [
   { href: "/schedule", label: "일정", icon: CalendarDays },
   { href: "/hotels", label: "숙소", icon: Hotel },
   { href: "/budget", label: "예산", icon: Wallet },
+  { href: "/settle", label: "정산", icon: ArrowRightLeft },
   { href: "/weather", label: "날씨", icon: CloudSun },
   { href: "/resources", label: "자료", icon: FolderOpen },
 ];
@@ -130,7 +132,7 @@ export default function Navigation() {
 
       {/* Mobile Navigation - Bottom Tab Bar */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-2xl border-t border-neutral-200 dark:border-neutral-800 safe-area-bottom shadow-[0_-1px_3px_rgba(0,0,0,0.05)]">
-        <div className="grid grid-cols-6 h-16">
+        <div className="grid grid-cols-7 h-16">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
