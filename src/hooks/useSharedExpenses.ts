@@ -68,16 +68,29 @@ export function useSharedExpenses() {
 
   const addExpense = useCallback(
     async (expense: Omit<SharedExpense, "id" | "created_at">) => {
-      const { error } = await supabase.from(TABLE).insert(expense);
+      const { data, error } = await supabase.from(TABLE).insert(expense).select().single();
       if (error) throw error;
+      // Optimistic: add to local state immediately
+      if (data) {
+        setExpenses((prev) => {
+          if (prev.some((e) => e.id === data.id)) return prev;
+          return [data, ...prev];
+        });
+      }
     },
     []
   );
 
   const updateExpense = useCallback(
     async (id: string, updates: Partial<Omit<SharedExpense, "id" | "created_at">>) => {
-      const { error } = await supabase.from(TABLE).update(updates).eq("id", id);
+      const { data, error } = await supabase.from(TABLE).update(updates).eq("id", id).select().single();
       if (error) throw error;
+      // Optimistic: update local state immediately
+      if (data) {
+        setExpenses((prev) =>
+          prev.map((e) => (e.id === id ? data : e))
+        );
+      }
     },
     []
   );
@@ -85,6 +98,8 @@ export function useSharedExpenses() {
   const deleteExpense = useCallback(async (id: string) => {
     const { error } = await supabase.from(TABLE).delete().eq("id", id);
     if (error) throw error;
+    // Optimistic: remove from local state immediately
+    setExpenses((prev) => prev.filter((e) => e.id !== id));
   }, []);
 
   // Settlement calculation
